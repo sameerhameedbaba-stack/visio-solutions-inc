@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Design tokens — theme-aware neutrals as RGB channels so Tailwind opacity
+ * modifiers work (e.g. bg-surface/70). Brand + semantic colors live in
+ * tailwind.config.ts. See DESIGN_SYSTEM.md for the full system and contrast notes.
+ */
+@layer base {
+  :root {
+    --background: 247 249 252; /* #F7F9FC */
+    --surface: 255 255 255; /* #FFFFFF */
+    --surface-subtle: 238 243 248; /* #EEF3F8 */
+    --surface-raised: 255 255 255; /* #FFFFFF */
+    --border: 220 227 236; /* #DCE3EC */
+    --foreground: 16 24 40; /* #101828 */
+    --muted-foreground: 52 64 84; /* #344054 */
+    --subtle-foreground: 90 100 120; /* accessible muted */
+    /* Interactive accent + semantic text colors, tuned for AA on light surfaces. */
+    --accent: 29 78 216; /* #1D4ED8 */
+    --success: 21 117 81; /* #157551 */
+    --warning: 122 78 0; /* #7A4E00 */
+    --error: 196 50 50; /* #C43232 */
+    --info: 29 78 216; /* #1D4ED8 */
+    --ease-natural: cubic-bezier(0.22, 0.61, 0.36, 1);
+    color-scheme: light;
+  }
+
+  .dark {
+    --background: 8 17 31; /* #08111F */
+    --surface: 16 27 45; /* #101B2D */
+    --surface-subtle: 22 35 56; /* #162338 */
+    --surface-raised: 22 35 56; /* #162338 */
+    --border: 42 56 80; /* #2A3850 */
+    --foreground: 248 250 252; /* #F8FAFC */
+    --muted-foreground: 201 212 229; /* #C9D4E5 */
+    --subtle-foreground: 148 163 184; /* #94A3B8 */
+    /* Lighter accent + semantic text colors for AA on dark surfaces. */
+    --accent: 96 165 250; /* #60A5FA */
+    --success: 52 211 153; /* #34D399 */
+    --warning: 245 158 11; /* #F59E0B */
+    --error: 248 113 113; /* #F87171 */
+    --info: 96 165 250; /* #60A5FA */
+    color-scheme: dark;
+  }
+
+  * {
+    border-color: rgb(var(--border));
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: rgb(var(--background));
+    color: rgb(var(--muted-foreground));
+    font-feature-settings: 'cv11', 'ss01';
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: rgb(var(--foreground));
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Visible, consistent focus for keyboard users only. */
+  :focus-visible {
+    outline: 2px solid theme('colors.brand.DEFAULT');
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Respect reduced-motion: disable non-essential movement. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  ::selection {
+    background-color: theme('colors.brand.DEFAULT' / 20%);
+  }
+}
+
+@layer components {
+  /* Editorial prose width for legal and article body copy. */
+  .prose-content {
+    max-width: 72ch;
+  }
+  .prose-content p {
+    margin-bottom: 1.15em;
+    line-height: 1.7;
+  }
+  .prose-content h2 {
+    margin-top: 2em;
+    margin-bottom: 0.6em;
+  }
+  .prose-content h3 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+  .prose-content ul {
+    margin: 0 0 1.15em 0;
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  .prose-content li {
+    margin-bottom: 0.4em;
+    line-height: 1.6;
+  }
+  .prose-content a {
+    color: rgb(var(--accent));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  /* Section-reveal animation, gated by data attribute + reduced-motion. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  .reveal[data-visible='true'] {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 0.5s var(--ease-natural),
+      transform 0.5s var(--ease-natural);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
