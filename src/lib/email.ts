@@ -42,22 +42,21 @@ export function sanitizeHeaderValue(value: string): string {
 }
 
 function buildSubject(submission: ContactInput): string {
-  return sanitizeHeaderValue(`New inquiry — ${submission.service} — ${submission.company}`).slice(
-    0,
-    180,
-  );
+  const service = submission.service || 'General';
+  const who = submission.company || submission.fullName;
+  return sanitizeHeaderValue(`New inquiry — ${service} — ${who}`).slice(0, 180);
 }
 
 function buildHtmlBody(submission: ContactInput): string {
   const rows: [string, string][] = [
     ['Full name', submission.fullName],
     ['Work email', submission.workEmail],
-    ['Company', submission.company],
+    ['Company', submission.company || '—'],
     ['Phone', submission.phone || '—'],
-    ['Service needed', submission.service],
-    ['Project stage', submission.projectStage],
-    ['Estimated budget', submission.budget],
-    ['Timeline', submission.timeline],
+    ['Service needed', submission.service || '—'],
+    ['Project stage', submission.projectStage || '—'],
+    ['Estimated budget', submission.budget || '—'],
+    ['Timeline', submission.timeline || '—'],
   ];
   const rowsHtml = rows
     .map(

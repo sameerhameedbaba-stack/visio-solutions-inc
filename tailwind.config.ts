@@ -60,9 +60,9 @@ const config: Config = {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
       fontSize: {
-        display: ['clamp(3rem, 6vw, 5.75rem)', { lineHeight: '1.02', letterSpacing: '-0.02em' }],
-        h1: ['clamp(2.65rem, 5vw, 4.25rem)', { lineHeight: '1.06', letterSpacing: '-0.02em' }],
-        h2: ['clamp(2rem, 3.5vw, 3.15rem)', { lineHeight: '1.12', letterSpacing: '-0.015em' }],
+        display: ['clamp(2.75rem, 5.5vw, 5rem)', { lineHeight: '1.03', letterSpacing: '-0.02em' }],
+        h1: ['clamp(2rem, 3.8vw, 3.4rem)', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
+        h2: ['clamp(1.85rem, 3vw, 2.85rem)', { lineHeight: '1.14', letterSpacing: '-0.015em' }],
         h3: ['clamp(1.4rem, 2vw, 2rem)', { lineHeight: '1.18', letterSpacing: '-0.01em' }],
         h4: ['1.25rem', { lineHeight: '1.3' }],
         'body-lg': ['clamp(1.1rem, 1.5vw, 1.3rem)', { lineHeight: '1.6' }],

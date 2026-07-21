@@ -32,7 +32,9 @@ export function pageMetadata({
   const fullTitle = title.includes(company.name) ? title : `${title} | ${company.shortName}`;
 
   return {
-    title: fullTitle,
+    // `absolute` prevents the root title template from appending the brand a
+    // second time — fullTitle already contains exactly one brand mention.
+    title: { absolute: fullTitle },
     description,
     ...(keywords ? { keywords } : {}),
     alternates: { canonical },

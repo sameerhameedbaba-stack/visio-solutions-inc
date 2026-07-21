@@ -51,6 +51,9 @@ const optionalPhone = z
   .optional()
   .or(z.literal(''));
 
+// Only name, work email, project description, and consent are required — the
+// rest are optional to reduce first-touch friction. Optional selects accept an
+// empty string (unselected) or one allowlisted value.
 export const contactSchema = z.object({
   fullName: z.string().trim().min(2, 'Please enter your full name.').max(100, 'Name is too long.'),
   workEmail: z
@@ -59,16 +62,12 @@ export const contactSchema = z.object({
     .min(5, 'Please enter your work email.')
     .max(254, 'Email is too long.')
     .email('Enter a valid email address.'),
-  company: z
-    .string()
-    .trim()
-    .min(2, 'Please enter your company.')
-    .max(150, 'Company name is too long.'),
+  company: z.string().trim().max(150, 'Company name is too long.').optional().or(z.literal('')),
   phone: optionalPhone,
-  service: z.enum(serviceOptions, { message: 'Please choose a service.' }),
-  projectStage: z.enum(projectStageOptions, { message: 'Please choose a project stage.' }),
-  budget: z.enum(budgetOptions, { message: 'Please choose a budget option.' }),
-  timeline: z.enum(timelineOptions, { message: 'Please choose a timeline.' }),
+  service: z.enum(serviceOptions).optional().or(z.literal('')),
+  projectStage: z.enum(projectStageOptions).optional().or(z.literal('')),
+  budget: z.enum(budgetOptions).optional().or(z.literal('')),
+  timeline: z.enum(timelineOptions).optional().or(z.literal('')),
   projectDescription: z
     .string()
     .trim()

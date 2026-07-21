@@ -31,17 +31,17 @@ const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
 function toWeb3FormsPayload(data: ContactInput) {
   return {
     access_key: WEB3FORMS_KEY,
-    subject: `New website inquiry — ${data.service} — ${data.company}`,
+    subject: `New website inquiry — ${data.service || 'General'} — ${data.company || data.fullName}`,
     from_name: data.fullName,
     replyto: data.workEmail,
     'Full name': data.fullName,
     'Work email': data.workEmail,
-    Company: data.company,
+    Company: data.company || '—',
     Phone: data.phone || '—',
-    'Service needed': data.service,
-    'Project stage': data.projectStage,
-    'Estimated budget': data.budget,
-    Timeline: data.timeline,
+    'Service needed': data.service || '—',
+    'Project stage': data.projectStage || '—',
+    'Estimated budget': data.budget || '—',
+    Timeline: data.timeline || '—',
     'Project description': data.projectDescription,
     // Web3Forms spam honeypot — must stay empty.
     botcheck: '',
@@ -60,18 +60,18 @@ function buildMailtoHref(data: ContactInput): string {
   const body = [
     `Full name: ${data.fullName}`,
     `Work email: ${data.workEmail}`,
-    `Company: ${data.company}`,
+    `Company: ${data.company || '—'}`,
     `Phone: ${data.phone || '—'}`,
-    `Service needed: ${data.service}`,
-    `Project stage: ${data.projectStage}`,
-    `Estimated budget: ${data.budget}`,
-    `Timeline: ${data.timeline}`,
+    `Service needed: ${data.service || '—'}`,
+    `Project stage: ${data.projectStage || '—'}`,
+    `Estimated budget: ${data.budget || '—'}`,
+    `Timeline: ${data.timeline || '—'}`,
     '',
     'Project description:',
     data.projectDescription,
   ].join('\n');
   return `mailto:${company.email}?subject=${encodeURIComponent(
-    `Website inquiry — ${data.service}`,
+    `Website inquiry — ${data.service || 'General'}`,
   )}&body=${encodeURIComponent(body)}`;
 }
 
@@ -300,7 +300,6 @@ export function ContactForm() {
           id="field-company"
           name="company"
           label="Company"
-          required
           autoComplete="organization"
           maxLength={150}
           value={values.company}
@@ -324,7 +323,6 @@ export function ContactForm() {
           id="field-service"
           name="service"
           label="Service needed"
-          required
           options={serviceOptions}
           value={values.service}
           onChange={(e) => update('service', e.target.value)}
@@ -335,7 +333,6 @@ export function ContactForm() {
           id="field-projectStage"
           name="projectStage"
           label="Project stage"
-          required
           options={projectStageOptions}
           value={values.projectStage}
           onChange={(e) => update('projectStage', e.target.value)}
@@ -346,7 +343,6 @@ export function ContactForm() {
           id="field-budget"
           name="budget"
           label="Estimated budget"
-          required
           helpText="Rough ranges only — this helps us suggest an appropriate approach."
           options={budgetOptions}
           value={values.budget}
@@ -358,7 +354,6 @@ export function ContactForm() {
           id="field-timeline"
           name="timeline"
           label="Timeline"
-          required
           options={timelineOptions}
           value={values.timeline}
           onChange={(e) => update('timeline', e.target.value)}
