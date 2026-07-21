@@ -69,7 +69,7 @@ export const footerColumns: FooterColumn[] = [
     links: [
       { label: 'Solutions', href: '/solutions' },
       { label: 'Industries', href: '/industries' },
-      { label: 'Case Studies', href: '/case-studies' },
+      { label: 'Use Cases', href: '/use-cases' },
       { label: 'Insights', href: '/insights' },
     ],
   },

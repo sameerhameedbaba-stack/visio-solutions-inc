@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { pageMetadata } from '@/lib/seo';
 import { company, formattedAddress } from '@/content/company';
-import { differentiators, trustPrinciples } from '@/content/site';
+import { differentiators } from '@/content/site';
 import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
 import { SectionHeading } from '@/components/ui/SectionHeading';
@@ -17,32 +17,32 @@ const breadcrumbs = [
 ];
 
 export const metadata: Metadata = pageMetadata({
-  title: `About ${company.name}`,
+  title: 'About Visio Solutions',
   description:
-    'Visio Solutions is an integrated technology partner. Learn our business-first philosophy and our approach to responsible AI, software quality, security, and client collaboration.',
+    'Visio Solutions designs the systems behind how a business operates and grows, then connects the software, automation, AI, security, and measurement required to run them.',
   path: '/about',
 });
 
-const approach = [
+const responsibleApproach = [
   {
     title: 'Responsible AI',
     description:
-      'We apply AI where it creates real value, with human oversight, guardrails, and honest limits — never as a novelty or an unsupervised black box.',
+      'AI is applied where it creates measurable operational value, with defined human approval points, guardrails, evaluation criteria, and monitoring set before anything reaches production.',
   },
   {
     title: 'Software quality',
     description:
-      'Maintainable architecture, automated testing, and human review are defaults, so what we build stays an asset rather than becoming debt.',
+      'Systems are built on maintainable architecture with automated testing and human code review, so what we deliver stays an asset your team can operate and extend.',
   },
   {
-    title: 'Security',
+    title: 'Security by design',
     description:
-      'Security is designed into how systems are built and operated, with defensive scope and clearly documented limitations.',
+      'Security is designed into architecture and delivery — least-privilege access, input validation, dependency scanning, and secure defaults — with scope and limitations stated plainly.',
   },
   {
-    title: 'Client collaboration',
+    title: 'Documentation and handover',
     description:
-      'We work in phases, communicate technical decisions plainly, and hand over documentation and ownership so you are never dependent on us to keep running.',
+      'Every engagement produces documentation and a clean handover, so ownership stays with you and you are never dependent on a single vendor to keep running.',
   },
 ];
 
@@ -53,118 +53,97 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About"
         title="An integrated technology partner, built around outcomes"
-        headline="We connect software, AI, automation, security, and growth so they reinforce each other."
-        intro={`${company.name} exists to help organizations turn operational problems into practical digital systems — software built around real workflows, AI deployed where it genuinely helps, processes automated with control, systems strengthened through security-conscious engineering, and growth made measurable.`}
+        headline="We design the systems behind how a business operates and grows — then connect the software, automation, AI, security, and measurement required to run them."
+        intro={`${company.name} helps organizations turn operational problems into practical digital systems: software built around real workflows, AI deployed where it adds value, processes automated with control, systems strengthened through security-conscious engineering, and growth made measurable.`}
         breadcrumbs={breadcrumbs}
         actions={
           <>
-            <CtaButton cta="strategyCall" size="lg" withArrow />
+            <CtaButton cta="discussProject" size="lg" withArrow />
             <CtaButton cta="seeHowWeWork" variant="secondary" size="lg" />
           </>
         }
       />
 
-      <Section ariaLabel="What we believe">
+      {/* What we help organizations accomplish + why connected systems matter */}
+      <Section ariaLabel="Our philosophy">
         <Container width="wide">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <SectionHeading
-              eyebrow="Our philosophy"
-              title="Business first, technology second"
-              intro="Technology is only useful when it solves a real problem. We start from the outcome you need and choose the software, AI, automation, security, and growth work that gets you there — not the other way around."
+              eyebrow="What we do"
+              title="Business first, technology in service of it"
+              intro="We begin with the outcome you need — then choose the software, AI, automation, security, and growth work that delivers it."
             />
             <div className="prose-content text-muted-foreground">
               <p>
-                Too many technology decisions start with a tool and look for a problem to apply it
-                to. We work in the opposite direction. We begin by understanding the workflow, the
-                constraint, and the goal, then decide what — if anything — should be built,
-                automated, or connected.
+                Operational problems rarely have single-tool answers. A slow process, a manual
+                hand-off, a system that cannot talk to the next one — these are systems problems.
+                Visio Solutions designs the system that resolves them, then builds and connects the
+                parts required to run it.
               </p>
               <p>
-                That is also why we are deliberately integrated. Software, AI, automation, security,
-                and growth are not separate purchases in a business; they are facets of the same
-                operation. When they are designed together, they reinforce each other. When they are
-                bought in isolation, they tend to pull apart.
+                Connected systems matter because software, AI, automation, security, and growth are
+                facets of the same operation, not separate purchases. Designed together, they
+                reinforce each other: automation runs on reliable software, AI acts within secure
+                boundaries, and growth is measured against real data. Bought in isolation, they tend
+                to pull apart.
               </p>
               <p>
-                We are equally deliberate about what we do not do. We do not oversell AI, promise
-                guaranteed outcomes, or claim protection and results we cannot support. Where we
-                lack verified proof, we say so, and we build trust through process and standards
-                instead.
+                That is why we work as one accountable team across all five. It keeps decisions
+                coherent — and keeps you talking to the people who will actually build the result.
               </p>
             </div>
           </div>
         </Container>
       </Section>
 
-      <Section tone="subtle" ariaLabel="Our approach">
+      {/* How we make technology decisions */}
+      <Section tone="subtle" ariaLabel="How we make technology decisions">
         <Container>
           <SectionHeading
-            eyebrow="How we approach the work"
-            title="Principles that shape every engagement"
+            eyebrow="How we decide"
+            title="Technology decisions grounded in the business"
+            intro="We start from the objective, the workflow, and the constraints — then select the simplest approach that reliably meets them."
           />
           <div className="mt-10">
-            <FeatureGrid features={approach} columns={4} />
+            <FeatureGrid features={differentiators.slice(0, 8)} columns={4} tone="plain" />
           </div>
         </Container>
       </Section>
 
-      <Section ariaLabel="What makes us different">
+      {/* Responsible AI, quality, security, maintainability */}
+      <Section ariaLabel="Delivery principles">
         <Container>
-          <SectionHeading eyebrow="Differentiators" title="Why organizations work with us" />
+          <SectionHeading
+            eyebrow="Delivery principles"
+            title="How we build, secure, and hand over"
+          />
           <div className="mt-10">
-            <FeatureGrid features={differentiators} columns={4} tone="plain" />
+            <FeatureGrid features={responsibleApproach} columns={4} />
           </div>
         </Container>
       </Section>
 
-      {/* Transparent note in place of fabricated company story / team. */}
-      <Section tone="surface" ariaLabel="Company details">
+      {/* Contact details — business/mailing address, no unverified registration claim */}
+      <Section tone="subtle" ariaLabel="Contact details">
         <Container width="prose">
           <div className="rounded-feature border border-border bg-surface p-6 shadow-card sm:p-8">
-            <SectionHeading
-              as="h2"
-              eyebrow="Transparency"
-              title="What we are not inventing"
-              intro="We would rather be honest than impressive."
-            />
+            <SectionHeading as="h2" eyebrow="Get in touch" title="Talk to the team" />
             <div className="prose-content mt-6 text-muted-foreground">
               <p>
-                We have chosen not to publish a fabricated founding story, invented team profiles,
-                or unverified milestones. Leadership biographies, company history, certifications,
-                partnerships, and similar details will be added here only once they are verified.
-              </p>
-              <p>
-                What we can state plainly today: {company.name} is a United States company
-                registered at {formattedAddress}. You can reach the team at{' '}
-                <a href={`mailto:${company.email}`}>{company.email}</a>.
+                {company.name} is a United States company. You can reach the team by email at{' '}
+                <a href={`mailto:${company.email}`}>{company.email}</a>, or by mail at our business
+                address: {formattedAddress}.
               </p>
             </div>
           </div>
-        </Container>
-      </Section>
-
-      <Section tone="subtle" ariaLabel="How we build trust">
-        <Container>
-          <SectionHeading eyebrow="Trust" title="Earned through process, not proclaimed" />
-          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {trustPrinciples.map((principle) => (
-              <li
-                key={principle.title}
-                className="rounded-card border border-border bg-surface p-6 shadow-card"
-              >
-                <h3 className="text-base font-semibold text-foreground">{principle.title}</h3>
-                <p className="mt-1.5 text-sm text-muted-foreground">{principle.description}</p>
-              </li>
-            ))}
-          </ul>
         </Container>
       </Section>
 
       <CTASection
         title="Prefer a conversation to a brochure?"
-        body="Book a strategy call and tell us what you are trying to achieve. We will be straight with you about how — and whether — we can help."
-        primary="strategyCall"
-        secondary="discussProject"
+        body="Tell us what you’re trying to achieve, and we’ll suggest a sensible first step."
+        primary="discussProject"
+        secondary="strategyCall"
       />
     </>
   );

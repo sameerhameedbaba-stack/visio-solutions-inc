@@ -186,7 +186,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           <SectionHeading
             eyebrow="How we deliver"
             title="Technical and governance considerations"
-            intro="We are explicit about how the work is built and controlled — no hand-waving, no over-promising."
+            intro="Architecture, controls, evaluation criteria, and responsibilities are defined before production deployment."
           />
           <div className="mt-8 grid gap-6 lg:grid-cols-3">
             <div className="rounded-card border border-border bg-surface p-6">

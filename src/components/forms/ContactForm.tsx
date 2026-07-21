@@ -142,7 +142,7 @@ export function ContactForm() {
     if (IS_STATIC && !WEB3FORMS_KEY) {
       setMailtoHref(buildMailtoHref(parsed.data));
       setStatus('mailto');
-      trackEvent('contact_form_mailto', { service: parsed.data.service });
+      trackEvent('contact_form_mailto', { service: parsed.data.service || 'unspecified' });
       requestAnimationFrame(() => summaryRef.current?.focus());
       return;
     }
@@ -166,7 +166,7 @@ export function ContactForm() {
           });
 
       if (response.ok) {
-        trackEvent('contact_form_success', { service: parsed.data.service });
+        trackEvent('contact_form_success', { service: parsed.data.service || 'unspecified' });
         router.push('/thank-you');
         return;
       }

@@ -5,25 +5,21 @@ import { pageMetadata } from '@/lib/seo';
 import { company } from '@/content/company';
 import { services } from '@/content/services';
 import {
-  agenticAiExplainer,
   businessProblems,
   differentiators,
   generalFaqs,
   howWeWorkSteps,
   illustrativeUseCases,
   integratedLayers,
-  trustPrinciples,
 } from '@/content/site';
 import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { Badge } from '@/components/ui/Badge';
 import { CtaButton } from '@/components/ui/CtaButton';
 import { Reveal } from '@/components/ui/Reveal';
 import { ServicePillarGrid } from '@/components/marketing/ServicePillarGrid';
 import { FeatureGrid } from '@/components/marketing/FeatureGrid';
 import { ProcessTimeline } from '@/components/marketing/ProcessTimeline';
-import { IndustryGrid } from '@/components/marketing/IndustryGrid';
 import { UseCaseCard } from '@/components/marketing/UseCaseCard';
 import { FAQSection } from '@/components/marketing/FAQSection';
 import { CTASection } from '@/components/marketing/CTASection';
@@ -31,10 +27,11 @@ import { SystemsDiagram } from '@/components/marketing/SystemsDiagram';
 import { FaqSchema } from '@/components/seo/StructuredData';
 
 export const metadata: Metadata = pageMetadata({
-  title: `${company.name} — Integrated software, AI, automation, security, and growth`,
-  description: company.description,
+  title: `${company.name} — Software, AI and automation for how your business operates`,
+  description:
+    'Visio Solutions designs and develops custom software, connected workflows, practical AI systems, security-conscious infrastructure, and measurable growth programs around how your organization actually works.',
   path: '/',
-  ogTitle: 'Build smarter digital systems — software, AI, automation, security, and growth as one.',
+  ogTitle: 'Build the systems your business needs to operate, automate, and grow.',
 });
 
 export default function HomePage() {
@@ -42,24 +39,30 @@ export default function HomePage() {
     <>
       <FaqSchema faqs={generalFaqs} />
 
-      {/* SECTION 2 — HERO */}
+      {/* Hero */}
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-surface-subtle via-background to-background">
-        <Container className="py-16 sm:py-20 lg:py-24">
-          <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-            <div className="flex flex-col gap-6">
-              <Badge tone="brand">Integrated technology partner</Badge>
+        <Container className="py-12 sm:py-16 lg:py-20">
+          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-12">
+            <div className="flex flex-col gap-5">
+              <span className="text-eyebrow font-semibold uppercase tracking-wider text-accent">
+                Software, AI and automation for business operations
+              </span>
               <h1 className="text-h1 font-bold text-foreground">
-                Build smarter digital systems with software, AI, automation, security, and growth
-                working together.
+                Build the systems your business needs to operate, automate, and grow.
               </h1>
               <p className="max-w-xl text-body-lg text-muted-foreground">
-                Visio Solutions helps organizations design and build software, automate workflows,
-                deploy practical AI systems, strengthen digital operations, and create measurable
-                growth infrastructure — as one connected system, not disconnected services.
+                Visio Solutions designs and develops custom software, connected workflows, practical
+                AI systems, security-conscious digital infrastructure, and measurable growth programs
+                around the way your organization actually works.
               </p>
-              <div className="mt-2 flex flex-wrap gap-3">
-                <CtaButton cta="strategyCall" size="lg" withArrow />
-                <CtaButton cta="exploreServices" variant="secondary" size="lg" />
+              <div className="mt-1 flex flex-wrap gap-3">
+                <CtaButton cta="discussProject" size="lg" withArrow />
+                <CtaButton
+                  cta="exploreServices"
+                  variant="secondary"
+                  size="lg"
+                  labelOverride="Explore our capabilities"
+                />
               </div>
             </div>
             <Reveal className="w-full">
@@ -78,13 +81,13 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* SECTION 3 — CAPABILITY STRIP */}
-      <Section ariaLabel="Capabilities" size="sm">
+      {/* Connected capabilities */}
+      <Section ariaLabel="Connected capabilities" size="sm">
         <Container>
           <SectionHeading
             eyebrow="Four connected capabilities"
-            title="A single team across the systems you depend on"
-            intro="Each capability stands on its own. Their real value is in how they combine."
+            title="One team across the systems your business runs on"
+            intro="Each capability stands on its own. Their value comes from how they work together on the same engagement."
           />
           <div className="mt-10">
             <ServicePillarGrid />
@@ -92,13 +95,13 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* SECTION 4 — BUSINESS PROBLEMS */}
+      {/* Business problems */}
       <Section tone="subtle" ariaLabel="Business problems we address">
         <Container>
           <SectionHeading
-            eyebrow="The problems worth solving"
-            title="Where growth quietly gets stuck"
-            intro="Not every organization has every one of these — but most recognize a few."
+            eyebrow="Where growth gets stuck"
+            title="The operational problems we help solve"
+            intro="Most organizations recognize a few of these. Each one is a systems problem before it is a technology problem."
           />
           <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {businessProblems.map((problem, index) => (
@@ -113,14 +116,14 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* SECTION 5 — INTEGRATED SOLUTION ECOSYSTEM */}
-      <Section ariaLabel="How our work connects">
+      {/* How Visio approaches them */}
+      <Section ariaLabel="How Visio approaches these problems">
         <Container>
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
             <SectionHeading
-              eyebrow="An integrated model"
-              title="Start from the objective, build outward in layers"
-              intro="We do not begin with technology. We begin with the outcome, then assemble the layers that get there — each one building on the last."
+              eyebrow="How we approach it"
+              title="Start from the objective, then build outward in layers"
+              intro="We begin with the business objective, the workflow, and the constraints — then assemble the software, integration, AI, security, and measurement layers required to run it."
             />
             <ol className="relative flex flex-col gap-3">
               {integratedLayers.map((layer, index) => (
@@ -144,18 +147,18 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* SECTION 6 — CORE SERVICES */}
-      <Section tone="surface" ariaLabel="Core services">
+      {/* Selected services */}
+      <Section tone="surface" ariaLabel="Selected services">
         <Container>
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
             <SectionHeading
-              eyebrow="Core services"
-              title="What we build and run"
-              intro="Seven services across four capabilities, delivered by one accountable team."
+              eyebrow="What we build and run"
+              title="Services across four capabilities"
+              intro="Seven services, delivered by one accountable team."
             />
             <Link
               href="/services"
-              className="inline-flex flex-shrink-0 items-center gap-1 text-sm font-semibold text-accent hover:text-brand-hover"
+              className="inline-flex min-h-[24px] flex-shrink-0 items-center gap-1 text-sm font-semibold text-accent hover:text-brand-hover"
             >
               View all services
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -184,108 +187,40 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* SECTION 7 — AGENTIC AI */}
-      <Section tone="navy" ariaLabel="Agentic AI in business terms">
+      {/* Representative use cases (three) */}
+      <Section tone="subtle" ariaLabel="Representative use cases">
         <Container>
-          <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
-            <div>
-              <SectionHeading
-                eyebrow="Agentic AI, explained plainly"
-                title="AI agents that solve defined problems — not novelties"
-                intro={agenticAiExplainer.whatItIs}
-                tone="onDark"
-              />
-              <ul className="mt-6 flex flex-col gap-3">
-                {agenticAiExplainer.principles.map((principle) => (
-                  <li key={principle} className="flex items-start gap-3 text-slate-200">
-                    <span aria-hidden="true" className="mt-1 text-brand-bright">
-                      ◆
-                    </span>
-                    {principle}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-8">
-                <CtaButton cta="exploreAi" variant="onDark" withArrow />
-              </div>
-            </div>
-            <div className="rounded-feature border border-white/10 bg-white/5 p-6 sm:p-8">
-              <p className="text-eyebrow font-semibold uppercase tracking-wider text-brand-bright">
-                Where agents help
-              </p>
-              <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5 text-sm text-slate-200">
-                {agenticAiExplainer.whereUseful.map((item) => (
-                  <li key={item} className="flex items-start gap-2">
-                    <span
-                      aria-hidden="true"
-                      className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-teal"
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-6 border-t border-white/10 pt-4 text-xs text-slate-400">
-                Shown as potential and illustrative use cases — not completed client results.
-              </p>
-            </div>
-          </div>
-        </Container>
-      </Section>
-
-      {/* SECTIONS 8–10 — CAPABILITY DEEP-DIVE (Software / Security / Marketing) */}
-      <Section ariaLabel="Engineering, security, and growth">
-        <Container>
-          <div className="grid gap-6 lg:grid-cols-3">
-            {[
-              {
-                title: 'Software engineering with accountability',
-                body: 'Custom applications, web platforms, internal tools, integrations, and modernization — with quality engineering and human oversight. Automated development means AI-assisted, human-reviewed engineering, never unreviewed code generation.',
-                href: '/services/custom-software-development',
-                cta: 'Explore software engineering',
-              },
-              {
-                title: 'Security-conscious by design',
-                body: 'Defensive security engineering: secure development practices, AI-assisted alert enrichment, and monitoring integration — with human oversight and honest limits. We do not promise complete protection or claim certifications.',
-                href: '/services/ai-cybersecurity',
-                cta: 'Explore cybersecurity',
-              },
-              {
-                title: 'Growth you can measure',
-                body: 'SEO, performance marketing, conversion optimization, and marketing automation connected to your website, CRM, and reporting — so decisions rest on real data. No guaranteed rankings or revenue.',
-                href: '/services/digital-marketing',
-                cta: 'Explore digital growth',
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="flex flex-col rounded-card border border-border bg-surface p-6 shadow-card"
-              >
-                <h3 className="text-lg font-semibold text-foreground">{item.title}</h3>
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
-                  {item.body}
-                </p>
-                <Link
-                  href={item.href}
-                  className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-accent hover:text-brand-hover"
-                >
-                  {item.cta}
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </Link>
-              </div>
+          <SectionHeading
+            eyebrow="Use cases"
+            title="What integrated delivery looks like in practice"
+            intro="Representative scenarios that show how the layers combine to solve a defined problem."
+          />
+          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {illustrativeUseCases.slice(0, 3).map((useCase) => (
+              <UseCaseCard key={useCase.title} useCase={useCase} />
             ))}
           </div>
+          <p className="mt-6">
+            <Link
+              href="/use-cases"
+              className="inline-flex min-h-[24px] items-center gap-1 text-sm font-semibold text-accent hover:text-brand-hover"
+            >
+              See more use cases
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </p>
         </Container>
       </Section>
 
-      {/* SECTION 11 — HOW WE WORK */}
-      <Section tone="subtle" ariaLabel="How we work">
+      {/* Delivery method */}
+      <Section ariaLabel="How we deliver">
         <Container>
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
             <div className="lg:sticky lg:top-24">
               <SectionHeading
-                eyebrow="How we work"
-                title="A clear, phased method that reduces risk"
-                intro="Seven stages, adapted to each engagement. You always know what happens next, what we need, and what you get."
+                eyebrow="Delivery method"
+                title="A phased method with defined roles and quality gates"
+                intro="Seven stages, adapted to each engagement. Architecture, controls, evaluation criteria, and responsibilities are defined before production."
               />
               <div className="mt-6">
                 <CtaButton cta="seeHowWeWork" variant="secondary" withArrow />
@@ -296,75 +231,21 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* SECTION 12 — INDUSTRIES */}
-      <Section ariaLabel="Industries">
+      {/* Practical differentiators */}
+      <Section tone="surface" ariaLabel="How working with us differs">
         <Container>
           <SectionHeading
-            eyebrow="Industries"
-            title="Adapted to how different industries actually operate"
-            intro="Solutions can be adapted for a range of sectors. These groupings describe patterns, not claimed clients or verified sector credentials."
+            eyebrow="What working with us looks like"
+            title="How Visio Solutions approaches delivery"
+            intro="Practical principles that shape every engagement — from first discovery call to handover."
           />
           <div className="mt-10">
-            <IndustryGrid />
+            <FeatureGrid features={differentiators.slice(0, 6)} columns={3} />
           </div>
         </Container>
       </Section>
 
-      {/* SECTION 13 — WHY VISIO */}
-      <Section tone="surface" ariaLabel="Why Visio Solutions">
-        <Container>
-          <SectionHeading
-            eyebrow="Why Visio Solutions"
-            title="Defensible reasons to work with us"
-            intro="No superiority claims we cannot prove — just the principles that shape how we deliver."
-          />
-          <div className="mt-10">
-            <FeatureGrid features={differentiators} columns={4} />
-          </div>
-        </Container>
-      </Section>
-
-      {/* SECTION 14 — ILLUSTRATIVE USE CASES */}
-      <Section tone="subtle" ariaLabel="Illustrative use cases">
-        <Container>
-          <SectionHeading
-            eyebrow="Illustrative use cases"
-            title="What integrated delivery can look like"
-            intro="Clearly labelled illustrative scenarios — never presented as completed client work, and never with invented numbers."
-          />
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {illustrativeUseCases.map((useCase) => (
-              <UseCaseCard key={useCase.title} useCase={useCase} />
-            ))}
-          </div>
-        </Container>
-      </Section>
-
-      {/* SECTION 15 — TRUST */}
-      <Section ariaLabel="How we build trust">
-        <Container>
-          <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
-            <SectionHeading
-              eyebrow="Trust, earned honestly"
-              title="Capability-led trust, not manufactured proof"
-              intro="We do not display invented testimonials, client logos, or metrics. Trust is built through process, standards, and responsible engineering — with real proof added only once it is verified."
-            />
-            <ul className="grid gap-4 sm:grid-cols-2">
-              {trustPrinciples.map((principle) => (
-                <li
-                  key={principle.title}
-                  className="rounded-card border border-border bg-surface p-5 shadow-card"
-                >
-                  <h3 className="text-base font-semibold text-foreground">{principle.title}</h3>
-                  <p className="mt-1.5 text-sm text-muted-foreground">{principle.description}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Container>
-      </Section>
-
-      {/* SECTION 16 — FAQ */}
+      {/* FAQ */}
       <Section tone="subtle" ariaLabel="Frequently asked questions">
         <Container width="wide">
           <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
@@ -374,12 +255,12 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* SECTION 17 — FINAL CTA */}
+      {/* Final CTA */}
       <CTASection
         title="Let’s identify the systems, workflows, or growth constraints worth solving first"
-        body="A strategy call is a focused conversation about your goals — not a sales pitch. We will point you to the most useful next step, even if that is not us."
-        primary="strategyCall"
-        secondary="discussProject"
+        body="Tell us the problem you’re trying to solve. We’ll point you to a sensible first step — an assessment, a focused project, or a strategy call."
+        primary="discussProject"
+        secondary="strategyCall"
       />
     </>
   );
