@@ -38,21 +38,29 @@ const securityHeaders = [
   { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
 ];
 
+// When STATIC_EXPORT=true, build a fully static site (`out/`) suitable for
+// shared hosting (e.g. Hostinger hPanel). In that mode there is no Node server,
+// so response headers are delivered via `.htaccess` instead of `headers()`, and
+// the `/api/contact` route is excluded by the build:static script.
+const isStatic = process.env.STATIC_EXPORT === 'true';
+
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
-  images: {
-    formats: ['image/avif', 'image/webp'],
-  },
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: securityHeaders,
-      },
-    ];
-  },
+  images: isStatic ? { unoptimized: true } : { formats: ['image/avif', 'image/webp'] },
+  ...(isStatic
+    ? { output: 'export', trailingSlash: true }
+    : {
+        async headers() {
+          return [
+            {
+              source: '/:path*',
+              headers: securityHeaders,
+            },
+          ];
+        },
+      }),
 };
 
 export default nextConfig;

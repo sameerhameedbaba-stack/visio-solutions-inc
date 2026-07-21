@@ -5,6 +5,9 @@ export const alt = `${company.name} — integrated software, AI, automation, sec
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
+// Generate the OG image at build time so it works under `output: export`.
+export const dynamic = 'force-static';
+
 /** Branded Open Graph image generated at build time — no external assets. */
 export default function OpengraphImage() {
   return new ImageResponse(

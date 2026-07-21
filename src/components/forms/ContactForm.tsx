@@ -19,6 +19,35 @@ import { FormField } from './FormField';
 
 type Status = 'idle' | 'submitting' | 'error' | 'network-error';
 
+/**
+ * Optional Web3Forms access key. When set (typically for a static export on
+ * shared hosting where the Node API route is unavailable), submissions are sent
+ * to Web3Forms instead of `/api/contact`. The key is a public identifier and is
+ * safe to expose client-side.
+ */
+const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
+
+/** Map a validated submission to a readable Web3Forms payload. */
+function toWeb3FormsPayload(data: ContactInput) {
+  return {
+    access_key: WEB3FORMS_KEY,
+    subject: `New website inquiry — ${data.service} — ${data.company}`,
+    from_name: data.fullName,
+    replyto: data.workEmail,
+    'Full name': data.fullName,
+    'Work email': data.workEmail,
+    Company: data.company,
+    Phone: data.phone || '—',
+    'Service needed': data.service,
+    'Project stage': data.projectStage,
+    'Estimated budget': data.budget,
+    Timeline: data.timeline,
+    'Project description': data.projectDescription,
+    // Web3Forms spam honeypot — must stay empty.
+    botcheck: '',
+  };
+}
+
 const initialValues = {
   fullName: '',
   workEmail: '',
@@ -82,11 +111,20 @@ export function ContactForm() {
     setStatus('submitting');
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(parsed.data),
-      });
+      // On static hosting (no Node server) a Web3Forms access key routes the
+      // submission to a hosted form endpoint. Otherwise the built-in server API
+      // route is used. Both are configured via environment variables.
+      const response = WEB3FORMS_KEY
+        ? await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify(toWeb3FormsPayload(parsed.data)),
+          })
+        : await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(parsed.data),
+          });
 
       if (response.ok) {
         trackEvent('contact_form_success', { service: parsed.data.service });
@@ -94,15 +132,19 @@ export function ContactForm() {
         return;
       }
 
-      const data = (await response.json().catch(() => null)) as {
-        errors?: ContactErrors;
-        message?: string;
-      } | null;
-      if (data?.errors) {
-        setErrors(data.errors);
+      // The server API route can return per-field validation errors; Web3Forms
+      // does not (client validation already passed).
+      if (!WEB3FORMS_KEY) {
+        const data = (await response.json().catch(() => null)) as {
+          errors?: ContactErrors;
+          message?: string;
+        } | null;
+        if (data?.errors) {
+          setErrors(data.errors);
+        }
       }
       setStatus('error');
-      trackEvent('contact_form_error', { reason: 'server_validation' });
+      trackEvent('contact_form_error', { reason: 'submit_failed' });
       requestAnimationFrame(() => summaryRef.current?.focus());
     } catch {
       setStatus('network-error');

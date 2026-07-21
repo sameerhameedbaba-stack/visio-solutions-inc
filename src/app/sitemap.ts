@@ -4,6 +4,9 @@ import { serviceSlugs } from '@/content/services';
 import { solutionSlugs } from '@/content/solutions';
 import { articleSlugs } from '@/content/insights';
 
+// Allow generation under `output: export` (static hosting).
+export const dynamic = 'force-static';
+
 /** Generated sitemap covering all indexable routes. Thank-you/404 are excluded. */
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
