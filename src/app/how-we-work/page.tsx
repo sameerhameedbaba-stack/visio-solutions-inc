@@ -122,14 +122,14 @@ export default function HowWeWorkPage() {
           <SectionHeading
             eyebrow="Engagement types"
             title="Ways to start"
-            intro="We do not publish fixed pricing here, because the right shape depends on the work. These are common ways engagements begin."
+            intro="Pricing depends on the shape of the work, so we scope it per engagement. These are common ways engagements begin."
           />
           <div className="mt-10">
             <FeatureGrid features={engagementTypes} columns={4} tone="plain" />
           </div>
           <p className="mt-6 text-sm text-subtle-foreground">
-            We do not make response-time or delivery-time promises without confirming them for your
-            specific engagement.
+            Response and delivery timelines are confirmed for your specific engagement rather than
+            promised in advance.
           </p>
         </Container>
       </Section>

@@ -71,6 +71,23 @@ describe('contactSchema', () => {
     expect(result.success).toBe(true);
   });
 
+  it('accepts a minimal payload (only name, email, description, consent)', () => {
+    const result = contactSchema.safeParse({
+      fullName: 'Jane Doe',
+      workEmail: 'jane@acme.com',
+      company: '',
+      phone: '',
+      service: '',
+      projectStage: '',
+      budget: '',
+      timeline: '',
+      projectDescription: 'A project description that is comfortably longer than twenty characters.',
+      consent: true,
+      companyWebsite: '',
+    });
+    expect(result.success).toBe(true);
+  });
+
   it('rejects an invalid phone number', () => {
     const result = contactSchema.safeParse({ ...validPayload, phone: 'call-me-maybe!!!' });
     expect(result.success).toBe(false);

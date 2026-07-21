@@ -71,6 +71,11 @@ export interface Service {
   relatedSlugs: string[];
   primaryCta: CtaKey;
   secondaryCta: CtaKey;
+  /** Service-specific differentiation (optional; rendered when present). */
+  clientInputs?: string[];
+  outOfScope?: string[];
+  commonRisks?: string[];
+  firstPhase?: string;
 }
 
 export interface Pillar {

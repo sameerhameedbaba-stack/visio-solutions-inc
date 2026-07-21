@@ -3,7 +3,6 @@ import { pageMetadata } from '@/lib/seo';
 import { industries, industriesIntro } from '@/content/industries';
 import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
-import { Badge } from '@/components/ui/Badge';
 import { CtaButton } from '@/components/ui/CtaButton';
 import { PageHero } from '@/components/marketing/PageHero';
 import { CheckList } from '@/components/marketing/CheckList';
@@ -16,11 +15,11 @@ const breadcrumbs = [
 ];
 
 export const metadata: Metadata = pageMetadata({
-  title: 'Industries we adapt technology for',
+  title: 'Operating contexts we work in',
   description:
-    'How Visio Solutions adapts software, AI, automation, security, and growth strategies to the operating realities of different industries — framed as patterns, not claimed clients.',
+    'Visio Solutions groups organizations by operating context — knowledge-intensive, operations-heavy, digital product, multi-location, and regulated or data-sensitive — and addresses the workflow patterns each one shares.',
   path: '/industries',
-  keywords: 'industry technology solutions, sector automation, adaptable software',
+  keywords: 'operating context, workflow patterns, business automation, custom software',
 });
 
 export default function IndustriesPage() {
@@ -28,12 +27,12 @@ export default function IndustriesPage() {
     <>
       <BreadcrumbSchema items={breadcrumbs} />
       <PageHero
-        eyebrow="Industries"
-        title="Adapted to how your industry actually operates"
-        headline="Technology and automation strategies fitted to real operating conditions."
+        eyebrow="Operating contexts"
+        title="Fitted to how your organization operates"
+        headline="We group by operating context, not sector — and address the workflow patterns and constraints each one shares."
         intro={industriesIntro}
         breadcrumbs={breadcrumbs}
-        actions={<CtaButton cta="strategyCall" size="lg" withArrow />}
+        actions={<CtaButton cta="discussProject" size="lg" withArrow />}
       />
 
       <Section ariaLabel="Industry groups">
@@ -65,17 +64,12 @@ export default function IndustriesPage() {
               </div>
             ))}
           </div>
-          <p className="mt-8 flex justify-center">
-            <Badge tone="illustrative">
-              Patterns and examples are illustrative — not claims of existing sector clients
-            </Badge>
-          </p>
         </Container>
       </Section>
 
       <CTASection
-        title="Wondering how this maps to your sector?"
-        body="Every industry has its own constraints. A strategy call is the fastest way to translate these patterns to your situation."
+        title="Wondering how this maps to your organization?"
+        body="Every operating context has its own constraints. A short conversation is the fastest way to translate these patterns to your situation."
         primary="strategyCall"
         secondary="exploreServices"
       />

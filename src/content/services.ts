@@ -41,6 +41,23 @@ export const services: Service[] = [
   // ---------------------------------------------------------------------------
   {
     slug: 'agentic-ai',
+    clientInputs: [
+      'A defined workflow with a clear decision or output',
+      'Access to the data and tools the agent needs',
+      'A subject-matter reviewer for evaluation and approval points',
+    ],
+    outOfScope: [
+      'Fully autonomous agents acting without human review',
+      'A single general-purpose assistant meant to do everything',
+      'Training foundation models from scratch',
+    ],
+    commonRisks: [
+      'Scope creep from a workflow that was never fully defined',
+      'Trusting outputs without an evaluation baseline',
+      'Granting data access broader than the task requires',
+    ],
+    firstPhase:
+      'A suitability assessment on one or two candidate workflows — producing a recommended architecture, an evaluation baseline, and a clear go/no-go before any production build.',
     pillar: 'ai-automation',
     navLabel: 'Agentic AI Solutions',
     title: 'Agentic AI Solutions',
@@ -214,6 +231,23 @@ export const services: Service[] = [
   // ---------------------------------------------------------------------------
   {
     slug: 'ai-agents-automation',
+    clientInputs: [
+      'A description of the workflow and where it stalls today',
+      'Access to the systems the workflow spans',
+      'Someone who owns the process and its exceptions',
+    ],
+    outOfScope: [
+      'Replacing staff wholesale rather than removing repetitive steps',
+      'Automating a process no one can describe',
+      'Unattended automation of high-consequence decisions',
+    ],
+    commonRisks: [
+      'Automating a broken process instead of fixing it first',
+      'Brittle integrations with unstable source systems',
+      'Edge cases that were never mapped',
+    ],
+    firstPhase:
+      'A workflow map and a prioritized shortlist, then one automation run in shadow mode — observing alongside the current process — before it takes any action.',
     pillar: 'ai-automation',
     navLabel: 'AI Agents and Automation',
     title: 'AI Agents and Business Automation',
@@ -377,6 +411,23 @@ export const services: Service[] = [
   // ---------------------------------------------------------------------------
   {
     slug: 'automated-software-development',
+    clientInputs: [
+      'Access to the codebase and delivery pipeline',
+      'Agreement on quality gates and review standards',
+      'A technical point of contact for architecture decisions',
+    ],
+    outOfScope: [
+      'Shipping AI-generated code without human review',
+      'Guaranteed delivery timelines',
+      'Removing engineering accountability from the process',
+    ],
+    commonRisks: [
+      'Speed prioritized at the expense of maintainability',
+      'Test coverage that measures quantity rather than risk',
+      'Automation applied where a human decision belongs',
+    ],
+    firstPhase:
+      'An assessment of the current pipeline and test coverage, then a focused improvement — often CI/CD hardening or a targeted test suite — with quality gates in place.',
     pillar: 'software',
     navLabel: 'Automated Software Development',
     title: 'Automated Software Development',
@@ -525,6 +576,23 @@ export const services: Service[] = [
   // ---------------------------------------------------------------------------
   {
     slug: 'custom-software-development',
+    clientInputs: [
+      'Access to the people who run the process today',
+      'The rules, edge cases, and constraints that matter',
+      'A decision-maker for scope and priorities',
+    ],
+    outOfScope: [
+      'Rebuilding systems that already fit well',
+      'Open-ended scope without phased decisions',
+      'One-off code with no documentation or handover',
+    ],
+    commonRisks: [
+      'Unclear requirements surfacing late in the build',
+      'Scope expanding beyond the core workflow',
+      'Building for rare edge cases before the common path is solid',
+    ],
+    firstPhase:
+      'A discovery engagement that validates requirements and produces an architecture and a focused first version — enough to prove value before committing to the full build.',
     pillar: 'software',
     navLabel: 'Custom Software Development',
     title: 'Custom Software Development',
@@ -686,6 +754,23 @@ export const services: Service[] = [
   // ---------------------------------------------------------------------------
   {
     slug: 'web-application-development',
+    clientInputs: [
+      'Content, brand assets, or design direction where they exist',
+      'Access to any systems or data the app connects to',
+      'Clarity on who the experience is for',
+    ],
+    outOfScope: [
+      'Pixel-for-pixel copies of another brand',
+      'Features with no clear user or conversion purpose',
+      'Unmaintained one-off pages outside the system',
+    ],
+    commonRisks: [
+      'Performance and accessibility treated as afterthoughts',
+      'Scope drifting between a marketing site and a full application',
+      'Content not ready when the build is',
+    ],
+    firstPhase:
+      'A scoped build of the core pages or the primary application flow, on a maintainable foundation that can extend as needs grow.',
     pillar: 'software',
     navLabel: 'Web and Application Development',
     title: 'Web and Application Development',
@@ -833,6 +918,23 @@ export const services: Service[] = [
   // ---------------------------------------------------------------------------
   {
     slug: 'ai-cybersecurity',
+    clientInputs: [
+      'Read access to the systems and signals in scope',
+      'Agreement on what automation may and may not act on',
+      'A security owner for decisions and escalations',
+    ],
+    outOfScope: [
+      'Offensive security or penetration testing on the public site',
+      'Guaranteed threat prevention',
+      'Claims of certification or regulatory compliance',
+    ],
+    commonRisks: [
+      'Over-automating consequential security decisions',
+      'False positives eroding trust in alerts',
+      'Access granted beyond least privilege',
+    ],
+    firstPhase:
+      'A defensive assessment that identifies practical improvements — secure defaults, alert enrichment, or monitoring integration — with human oversight defined up front.',
     pillar: 'cybersecurity',
     navLabel: 'AI-Powered Cybersecurity',
     title: 'AI-Powered Cybersecurity',
@@ -981,6 +1083,23 @@ export const services: Service[] = [
   // ---------------------------------------------------------------------------
   {
     slug: 'digital-marketing',
+    clientInputs: [
+      'Access to your website, analytics, ad platforms, and CRM',
+      'Clarity on what a good outcome looks like',
+      'Someone who owns lead follow-up',
+    ],
+    outOfScope: [
+      'Guaranteed rankings, leads, or return on ad spend',
+      'Vanity-metric reporting disconnected from outcomes',
+      'Sending personal data into analytics',
+    ],
+    commonRisks: [
+      'Optimizing before measurement is trustworthy',
+      'Treating attribution as certainty rather than direction',
+      'Disconnected tools that fragment the data',
+    ],
+    firstPhase:
+      'A measurement-and-foundations pass — connecting website, CRM, and reporting — so later optimization rests on data you can trust.',
     pillar: 'growth',
     navLabel: 'Digital Marketing and Growth',
     title: 'Digital Marketing and Growth',

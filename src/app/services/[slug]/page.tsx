@@ -145,7 +145,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           <SectionHeading
             eyebrow="Illustrative use cases"
             title="Where this tends to help"
-            intro="Illustrative scenarios only — not completed client work, and never with invented outcomes."
+            intro="Representative scenarios showing how the service applies in practice. Each is labelled illustrative."
           />
           <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {service.useCases.map((useCase) => (
@@ -179,6 +179,63 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           </div>
         </Container>
       </Section>
+
+      {/* Scope & engagement (service-specific differentiation) */}
+      {(service.clientInputs || service.firstPhase || service.commonRisks || service.outOfScope) && (
+        <Section tone="subtle" ariaLabel="Scope and engagement">
+          <Container>
+            <SectionHeading
+              eyebrow="Scope and engagement"
+              title="What a sensible engagement looks like"
+              intro="Where this service starts, what we need from you, and where the boundaries are."
+            />
+            <div className="mt-8 grid gap-6 lg:grid-cols-2">
+              {service.clientInputs && (
+                <div className="rounded-card border border-border bg-surface p-6">
+                  <h3 className="text-base font-semibold text-foreground">What we need from you</h3>
+                  <CheckList items={service.clientInputs} className="mt-4" />
+                </div>
+              )}
+              {service.commonRisks && (
+                <div className="rounded-card border border-border bg-surface p-6">
+                  <h3 className="text-base font-semibold text-foreground">
+                    Common risks we manage
+                  </h3>
+                  <CheckList items={service.commonRisks} className="mt-4" />
+                </div>
+              )}
+              {service.outOfScope && (
+                <div className="rounded-card border border-border bg-surface p-6">
+                  <h3 className="text-base font-semibold text-foreground">
+                    Explicitly out of scope
+                  </h3>
+                  <ul className="mt-4 grid gap-3">
+                    {service.outOfScope.map((item) => (
+                      <li key={item} className="flex items-start gap-3 text-muted-foreground">
+                        <span aria-hidden="true" className="mt-0.5 text-subtle-foreground">
+                          ×
+                        </span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {service.firstPhase && (
+                <div className="rounded-card border border-brand/30 bg-brand/5 p-6">
+                  <h3 className="text-base font-semibold text-foreground">
+                    A sensible first phase
+                  </h3>
+                  <p className="mt-3 text-muted-foreground">{service.firstPhase}</p>
+                  <div className="mt-5">
+                    <CtaButton cta={service.primaryCta} withArrow />
+                  </div>
+                </div>
+              )}
+            </div>
+          </Container>
+        </Section>
+      )}
 
       {/* Delivery approach / technical + security */}
       <Section tone="surface" ariaLabel="Delivery, technical, and security considerations">
