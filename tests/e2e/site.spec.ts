@@ -90,19 +90,9 @@ test.describe('contact form', () => {
   test('requires the consent checkbox even when other fields are valid', async ({ page }) => {
     await page.goto('/contact');
     const form = page.locator('form');
+    // Only name, email, and description are required now.
     await form.getByRole('textbox', { name: 'Full name' }).fill('Jane Doe');
     await form.getByRole('textbox', { name: 'Work email' }).fill('jane@acme.com');
-    await form.getByRole('textbox', { name: 'Company', exact: true }).fill('Acme Inc');
-    await form
-      .getByRole('combobox', { name: 'Service needed' })
-      .selectOption('Custom Software Development');
-    await form
-      .getByRole('combobox', { name: 'Project stage' })
-      .selectOption('Defining requirements');
-    await form
-      .getByRole('combobox', { name: 'Estimated budget' })
-      .selectOption('Prefer to discuss');
-    await form.getByRole('combobox', { name: 'Timeline' }).selectOption('Within 1–3 months');
     await form
       .getByRole('textbox', { name: 'Project description' })
       .fill('A valid description that is comfortably longer than twenty characters.');
@@ -112,22 +102,11 @@ test.describe('contact form', () => {
     await expect(page).toHaveURL(/\/contact$/);
   });
 
-  test('submits a valid inquiry and redirects to thank-you', async ({ page }) => {
+  test('submits with only the required fields and redirects to thank-you', async ({ page }) => {
     await page.goto('/contact');
     const form = page.locator('form');
     await form.getByRole('textbox', { name: 'Full name' }).fill('Jane Doe');
     await form.getByRole('textbox', { name: 'Work email' }).fill('jane@acme.com');
-    await form.getByRole('textbox', { name: 'Company', exact: true }).fill('Acme Inc');
-    await form
-      .getByRole('combobox', { name: 'Service needed' })
-      .selectOption('Custom Software Development');
-    await form
-      .getByRole('combobox', { name: 'Project stage' })
-      .selectOption('Defining requirements');
-    await form
-      .getByRole('combobox', { name: 'Estimated budget' })
-      .selectOption('Prefer to discuss');
-    await form.getByRole('combobox', { name: 'Timeline' }).selectOption('Within 1–3 months');
     await form
       .getByRole('textbox', { name: 'Project description' })
       .fill('We need to replace a legacy internal tool with a custom operations platform.');

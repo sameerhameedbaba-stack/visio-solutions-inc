@@ -124,3 +124,46 @@ marked. Fixed during QA: footer copyright double-period ("Inc.." → "Inc.").
 - No launch-blocking **technical** defects. Remaining launch prerequisites are
   external (email provider, legal review) — see `MISSING_INPUTS.md` /
   `LAUNCH_CHECKLIST.md`.
+
+## Post-review revision (editorial + UX audit)
+
+A content/UX audit was implemented to make the copy read as a confident
+consultancy rather than a commentary on how carefully it was generated.
+
+**Changes**
+
+- **Metadata bug fixed:** titles no longer double the brand suffix. `pageMetadata`
+  returns an absolute title; every route now shows the brand exactly once
+  (e.g. `Services: AI, software, cybersecurity and growth | Visio Solutions`).
+- **Homepage** shortened ~26% (page copy 584 → 435 words) and de-duplicated:
+  removed the repeated capability strip, discipline trio, trust grid, and
+  standalone agentic-AI/industries sections; new hero copy and CTAs
+  (`Discuss your project` primary); affirmative section headings.
+- **Hero sizing:** reduced H1/H2 clamps. At 375×812 the H1 is ~141px and the
+  primary CTA sits at ~551px — above the fold. No horizontal overflow at 320/430.
+- **About:** removed "What we are not inventing" and the "registered at" claim;
+  affirmative structure; business/mailing-address wording only.
+- **Case Studies → Use Cases:** renamed route/H1/metadata/nav; removed
+  "won't manufacture proof"/"published later" messaging; illustrative labels kept;
+  no CaseStudy schema. `/case-studies` now 404s (site not yet live, no inbound links).
+- **Industries → operating contexts:** five operating-context groupings replace
+  named-sector framing.
+- **Service pages:** added per-service *What we need from you*, *Common risks*,
+  *Explicitly out of scope*, and *A sensible first phase*.
+- **Contact form friction:** only full name, work email, project description, and
+  consent required; company/phone/service/stage/budget/timeline optional. Honeypot,
+  server validation, rate limiting, and status handling unchanged.
+- **Language:** negative framings ("We do not…", "no hand-waving") replaced with
+  affirmative statements.
+
+**Validation after revision**
+
+| Check | Result |
+| --- | --- |
+| `npm run build` | ✅ Compiles; `/use-cases` route added, `/case-studies` removed |
+| `npm run typecheck` | ✅ No errors |
+| `npm run test` (Vitest) | ✅ 37 passed (added minimal-payload + single-suffix guards) |
+| Playwright site E2E | ✅ 16 passed, 2 skipped |
+| axe sweep (8 revised pages × light+dark) | ✅ 0 serious/critical violations |
+| Mobile hero fold (375×812) | ✅ H1 141px, CTA top 551px, no overflow at 320/430 |
+| Title brand-suffix audit | ✅ Exactly one brand mention per route |

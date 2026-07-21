@@ -17,7 +17,7 @@ const breadcrumbs = [
 ];
 
 export const metadata: Metadata = pageMetadata({
-  title: 'About Visio Solutions',
+  title: 'About Visio Solutions Inc.',
   description:
     'Visio Solutions designs the systems behind how a business operates and grows, then connects the software, automation, AI, security, and measurement required to run them.',
   path: '/about',
