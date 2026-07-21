@@ -22,7 +22,7 @@ describe('Button', () => {
 describe('UseCaseCard', () => {
   it('always shows the illustrative label', () => {
     render(<UseCaseCard useCase={illustrativeUseCases[0]!} />);
-    expect(screen.getByText(/illustrative use case/i)).toBeInTheDocument();
+    expect(screen.getByText(/illustrative example/i)).toBeInTheDocument();
   });
 });
 

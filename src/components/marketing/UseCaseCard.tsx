@@ -1,15 +1,16 @@
-import { Badge } from '@/components/ui/Badge';
 import type { UseCase } from '@/content/types';
 
 /**
- * Illustrative use case card. ALWAYS shows the "Illustrative use case" label so
- * it can never be mistaken for completed client work. No numerical outcomes.
+ * Illustrative use case card. Shows a subtle "Illustrative example" label so the
+ * scenario is never mistaken for completed client work. No numerical outcomes.
  */
 export function UseCaseCard({ useCase }: { useCase: UseCase }) {
   return (
     <article className="flex h-full flex-col rounded-card border border-border bg-surface p-6 shadow-card">
-      <Badge tone="illustrative">Illustrative use case</Badge>
-      <h3 className="mt-4 text-lg font-semibold text-foreground">{useCase.title}</h3>
+      <span className="text-eyebrow font-semibold uppercase tracking-wider text-subtle-foreground">
+        Illustrative example
+      </span>
+      <h3 className="mt-3 text-lg font-semibold text-foreground">{useCase.title}</h3>
       <dl className="mt-4 flex flex-1 flex-col gap-3 text-sm">
         <div>
           <dt className="font-semibold text-foreground">Situation</dt>
