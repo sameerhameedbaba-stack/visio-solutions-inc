@@ -17,7 +17,7 @@ import { company } from '@/content/company';
 import { Button } from '@/components/ui/Button';
 import { FormField } from './FormField';
 
-type Status = 'idle' | 'submitting' | 'error' | 'network-error';
+type Status = 'idle' | 'submitting' | 'error' | 'network-error' | 'mailto';
 
 /**
  * Optional Web3Forms access key. When set (typically for a static export on
@@ -46,6 +46,33 @@ function toWeb3FormsPayload(data: ContactInput) {
     // Web3Forms spam honeypot — must stay empty.
     botcheck: '',
   };
+}
+
+/**
+ * True when built as a static export (no Node server). Set by the build:static
+ * script. In that mode, if no Web3Forms key is configured, the form falls back to
+ * a pre-filled mailto so a submission is never silently lost.
+ */
+const IS_STATIC = process.env.NEXT_PUBLIC_STATIC_EXPORT === 'true';
+
+/** Build a mailto: link pre-filled with the submitted details (fallback path). */
+function buildMailtoHref(data: ContactInput): string {
+  const body = [
+    `Full name: ${data.fullName}`,
+    `Work email: ${data.workEmail}`,
+    `Company: ${data.company}`,
+    `Phone: ${data.phone || '—'}`,
+    `Service needed: ${data.service}`,
+    `Project stage: ${data.projectStage}`,
+    `Estimated budget: ${data.budget}`,
+    `Timeline: ${data.timeline}`,
+    '',
+    'Project description:',
+    data.projectDescription,
+  ].join('\n');
+  return `mailto:${company.email}?subject=${encodeURIComponent(
+    `Website inquiry — ${data.service}`,
+  )}&body=${encodeURIComponent(body)}`;
 }
 
 const initialValues = {
@@ -82,6 +109,7 @@ export function ContactForm() {
   const [errors, setErrors] = useState<ContactErrors>({});
   const [status, setStatus] = useState<Status>('idle');
   const [startTracked, setStartTracked] = useState(false);
+  const [mailtoHref, setMailtoHref] = useState<string | null>(null);
   const summaryRef = useRef<HTMLDivElement | null>(null);
 
   function update<K extends keyof typeof values>(key: K, value: (typeof values)[K]) {
@@ -108,6 +136,17 @@ export function ContactForm() {
     }
 
     setErrors({});
+
+    // Static export with no Web3Forms key: there is no backend to POST to, so
+    // offer a pre-filled email instead of a doomed request.
+    if (IS_STATIC && !WEB3FORMS_KEY) {
+      setMailtoHref(buildMailtoHref(parsed.data));
+      setStatus('mailto');
+      trackEvent('contact_form_mailto', { service: parsed.data.service });
+      requestAnimationFrame(() => summaryRef.current?.focus());
+      return;
+    }
+
     setStatus('submitting');
 
     try {
@@ -194,6 +233,34 @@ export function ContactForm() {
         >
           <p className="text-sm text-muted-foreground">
             We couldn’t submit your message. Please try again, or email us directly at{' '}
+            <a href={`mailto:${company.email}`} className="font-medium text-accent underline">
+              {company.email}
+            </a>
+            .
+          </p>
+        </div>
+      )}
+
+      {status === 'mailto' && mailtoHref && (
+        <div
+          ref={summaryRef}
+          tabIndex={-1}
+          role="status"
+          className="rounded-card border border-brand/30 bg-brand/5 p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        >
+          <p className="text-sm font-semibold text-foreground">One quick step to send</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Your details are ready. Click below to open your email app with everything filled in, then
+            hit send — it goes straight to our team.
+          </p>
+          <a
+            href={mailtoHref}
+            className="mt-3 inline-flex min-h-[44px] items-center justify-center rounded-input bg-brand px-5 text-[0.95rem] font-semibold text-white transition-colors hover:bg-brand-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            Open pre-filled email
+          </a>
+          <p className="mt-3 text-xs text-subtle-foreground">
+            Prefer not to use email? Write to us directly at{' '}
             <a href={`mailto:${company.email}`} className="font-medium text-accent underline">
               {company.email}
             </a>

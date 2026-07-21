@@ -106,6 +106,9 @@ try {
     env: {
       ...process.env,
       STATIC_EXPORT: 'true',
+      // Tells the contact form it is on static hosting (no /api/contact). With a
+      // Web3Forms key it submits there; without one it offers a pre-filled email.
+      NEXT_PUBLIC_STATIC_EXPORT: 'true',
       NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://visiosolutions.net',
     },
   });
