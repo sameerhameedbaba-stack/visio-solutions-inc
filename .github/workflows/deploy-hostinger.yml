@@ -1,0 +1,76 @@
+# Automatic deploy: GitHub -> Hostinger (over FTP).
+#
+# This is the "connect GitHub and Hostinger, deploy automatically" pipeline.
+# GitHub builds the static site and uploads it straight into Hostinger's
+# public_html. It runs on every push to the default branch, and can also be run
+# on demand from the Actions tab ("Run workflow").
+#
+# ONE-TIME SETUP (see DEPLOY_AUTOMATIC.md):
+#   Add these repository secrets in
+#   GitHub -> repo Settings -> Secrets and variables -> Actions -> New repository secret
+#     FTP_SERVER    = your Hostinger FTP hostname or IP (hPanel -> Files -> FTP Accounts)
+#     FTP_USERNAME  = your Hostinger FTP username
+#     FTP_PASSWORD  = your Hostinger FTP password
+#   Optional:
+#     WEB3FORMS_KEY = a free key from web3forms.com so the contact form emails you
+#
+# Until FTP_SERVER is set, the deploy step is skipped (the build still runs, so
+# nothing errors).
+
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [claude/website-creation-2lfkz9]
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-hostinger
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      FTP_SERVER: ${{ secrets.FTP_SERVER }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static site
+        run: npm run build:static
+        env:
+          NEXT_PUBLIC_SITE_URL: https://visiosolutions.net
+          # Optional: when set, the contact form delivers via Web3Forms.
+          NEXT_PUBLIC_WEB3FORMS_KEY: ${{ secrets.WEB3FORMS_KEY }}
+
+      - name: Deploy to Hostinger via FTP
+        if: ${{ env.FTP_SERVER != '' }}
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # Explicit FTP over TLS is the Hostinger default; change to "ftp" if your
+          # account only allows plain FTP.
+          protocol: ftps
+          port: 21
+          local-dir: ./out/
+          # Web root for the PRIMARY domain. If your FTP account is already rooted
+          # inside public_html, change this to ./
+          server-dir: public_html/
+
+      - name: Note if FTP secrets are missing
+        if: ${{ env.FTP_SERVER == '' }}
+        run: |
+          echo "::notice::Build succeeded. Add FTP_SERVER / FTP_USERNAME / FTP_PASSWORD"
+          echo "::notice::repository secrets to enable automatic deployment to Hostinger."
