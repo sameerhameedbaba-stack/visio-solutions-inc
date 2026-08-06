@@ -12,7 +12,15 @@
 #     FTP_USERNAME  = your Hostinger FTP username
 #     FTP_PASSWORD  = your Hostinger FTP password
 #   Optional:
-#     WEB3FORMS_KEY = a free key from web3forms.com so the contact form emails you
+#     WEB3FORMS_KEY          = a free key from web3forms.com so the contact form emails you
+#     PAYMENT_GATEWAY_ORIGIN = the gateway's checkout origin, if a "Pay now" form is
+#                              added (see PAYMENT_GATEWAY_SETUP.md). Without it the
+#                              Content-Security-Policy blocks the submission.
+#
+# NOTE: this deploy MIRRORS ./out/ into public_html and removes remote files that
+# are not in the build. Anything placed there by hand is deleted on the next push —
+# which is why the payment endpoint's notify-config.php and its log belong OUTSIDE
+# public_html (see PAYMENT_GATEWAY_SETUP.md).
 #
 # Until FTP_SERVER is set, the deploy step is skipped (the build still runs, so
 # nothing errors).
@@ -52,6 +60,8 @@ jobs:
           NEXT_PUBLIC_SITE_URL: https://visiosolutions.net
           # Optional: when set, the contact form delivers via Web3Forms.
           NEXT_PUBLIC_WEB3FORMS_KEY: ${{ secrets.WEB3FORMS_KEY }}
+          # Optional: only needed once a payment form posts to the gateway.
+          PAYMENT_GATEWAY_ORIGIN: ${{ secrets.PAYMENT_GATEWAY_ORIGIN }}
 
       - name: Deploy to Hostinger via FTP
         if: ${{ env.FTP_SERVER != '' }}

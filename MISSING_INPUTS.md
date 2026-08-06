@@ -19,15 +19,33 @@ where it appears, whether it blocks launch, and the temporary implementation.
 | ---------------------------------------- | ------------ | --------------------------- | -------------- | ----------------------------------------------------- |
 | Verified client list / approved logos    | Social proof | Trust section, case studies | No             | Hidden slots; illustrative use cases labelled         |
 | Verified testimonials                    | Social proof | Reusable testimonial slots  | No             | Not rendered until supplied                           |
-| Approved case studies + verified metrics | Evidence     | `/case-studies`             | No             | Problem types + illustrative cases + transparent note |
+| Approved case studies + verified metrics | Evidence     | `/use-cases`                | No             | Problem types + illustrative cases + transparent note |
 | Certifications / accreditations          | Trust        | About, footer, schema       | No             | Omitted; not claimed                                  |
 | Partnerships / technology-partner claims | Trust        | About, services             | No             | Omitted; not claimed                                  |
+
+## Payment gateway
+
+See `PAYMENT_GATEWAY_SETUP.md`. The three URLs the provider asked for are built and
+deployable today; everything below is information only the provider or the business
+can supply.
+
+| Item                                   | Why                                          | Where                       | Blocks launch?                  | Temporary implementation                               |
+| -------------------------------------- | -------------------------------------------- | --------------------------- | ------------------------------- | ------------------------------------------------------ |
+| Provider/platform name                 | Confirms the notification contract           | Integration                 | No                              | Endpoint accepts GET, POST form, or POST JSON          |
+| Notification method + full field list  | Know what actually arrives                   | `public/payment/notify.php` | No                              | Every parameter recorded, bounded and redacted         |
+| Provider's outbound IP ranges          | Enables the allowlist, the strongest control | `notify-config.php`         | No                              | Allowlist off; accepts from anywhere                   |
+| Shared secret (if the form allows one) | Stops blind forgery of notifications         | `notify-config.php`         | No                              | Off; endpoint records but never fulfils                |
+| Retry behaviour                        | Whether a missed call is ever re-sent        | Reconciliation process      | No                              | Assumed none; reconcile from the dashboard             |
+| Sending mailbox for `from_email`       | Notification email deliverability (SPF/DKIM) | `notify-config.php`         | No                              | `website@visiosolutions.net`, unauthenticated `mail()` |
+| Reconciliation owner                   | Someone must confirm money actually arrived  | Operations                  | **Yes (before taking payment)** | Documented in `LAUNCH_CHECKLIST.md`, unassigned        |
+| Refund / cancellation policy           | Often required for merchant review; legal    | A new legal page            | **Yes (if the provider asks)**  | Not written — needs the business terms and counsel     |
+| What is being sold, and at what price  | The "Amounts" section of the provider's form | Provider dashboard          | **Yes (before taking payment)** | Not modelled on the site                               |
 
 ## Company details
 
 | Item                           | Why                   | Where                 | Blocks launch? | Temporary implementation                      |
 | ------------------------------ | --------------------- | --------------------- | -------------- | --------------------------------------------- |
-| Leadership bios / team photos  | About page            | About                 | No             | Transparent "not inventing" note              |
+| Leadership bios / team photos  | About page            | About                 | No             | Capability-led About page; no invented people |
 | Company history / milestones   | About page            | About                 | No             | Focus on philosophy & principles              |
 | Phone number                   | Contact/schema        | Footer/contact/schema | No             | Email only; phone omitted from schema         |
 | Scheduling URL (e.g. Calendly) | Strategy-call booking | Primary CTA           | No             | CTA routes to `/contact?intent=strategy-call` |
