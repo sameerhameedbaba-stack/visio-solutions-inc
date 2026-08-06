@@ -8,6 +8,7 @@ const pages = [
   { name: 'how we work', path: '/how-we-work' },
   { name: 'contact', path: '/contact' },
   { name: 'insights article', path: '/insights/how-to-decide-what-to-automate-first' },
+  { name: 'payment', path: '/payment' },
   { name: 'payment success', path: '/payment/success?ChkID=8821&TransID=T-1' },
   { name: 'payment cancel', path: '/payment/cancel' },
 ];

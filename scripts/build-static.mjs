@@ -38,16 +38,23 @@ if (gatewayOrigin && !/^https:\/\/[a-z0-9.-]+(:\d+)?$/i.test(gatewayOrigin)) {
 }
 const gatewaySource = gatewayOrigin ? ` ${gatewayOrigin}` : '';
 
+// The payment provider in use: Green.Money's hosted checkout. /payment links out
+// to it, so navigation alone needs no policy change — but allowing it here means
+// the provider's own form snippet and embedded checkout also work if either is
+// ever preferred over the link.
+const paymentGateway = 'https://greenbyphone.com';
+const paymentSources = ` ${paymentGateway}${gatewaySource}`;
+
 const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${gatewaySource}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob:",
+  `img-src 'self' data: blob:${paymentSources}`,
   "font-src 'self' data:",
-  `connect-src 'self' https://api.web3forms.com${gatewaySource}`,
-  `form-action 'self' https://api.web3forms.com${gatewaySource}`,
+  `connect-src 'self' https://api.web3forms.com${paymentSources}`,
+  `form-action 'self' https://api.web3forms.com${paymentSources}`,
   // Only needed if the gateway's checkout is embedded rather than redirected to.
-  `frame-src 'self'${gatewaySource}`,
+  `frame-src 'self'${paymentSources}`,
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "object-src 'none'",

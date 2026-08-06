@@ -1,10 +1,33 @@
 # Payment gateway setup
 
-Three URLs are needed by the payment provider's configuration screen (the form with
-**Cancel Page**, **Success Page**, and **Instant Payment Notification Address**). All
-three now exist on the site.
+The provider is **Green.Money** (greenbyphone.com), merchant ID 119069. Payments are
+taken through a hosted "Green Button" — button **16783**, "Bundle products and
+services", configured for a variable amount.
 
-## The three values to paste
+## Taking payment: /payment
+
+`https://visiosolutions.net/payment/` carries the Pay now button. It links to the
+provider's hosted checkout using their Link Code:
+
+```
+https://greenbyphone.com/eCheck/eCheck.aspx?GreenButton_id=16783&TransactionID=
+```
+
+The link form is used rather than Green.Money's `<form>` snippet on purpose. A link
+navigation is not subject to the site's `form-action` policy, and it lets the page
+render its own accessible button instead of loading `Purchase1.png` from the
+provider's server. Both are allowed by the Content-Security-Policy anyway
+(`https://greenbyphone.com` is permitted for forms, frames and images), so the form
+or an embedded checkout can be swapped in later without a policy change.
+
+The button ID lives in `src/app/payment/page.tsx`. If Green.Money issues a new
+button, change it there — an end-to-end test asserts the link matches, so a stale ID
+fails the build rather than silently sending customers to the wrong checkout.
+
+To pre-fill a customer's invoice number, append it to the link:
+`…&TransactionID=INV-1042`.
+
+## The three values to paste into the Green Button settings
 
 Use `https://`, the apex domain, and keep the trailing slashes exactly as written.
 
@@ -31,7 +54,7 @@ order, send a receipt, grant access, or record anything.
 **`/payment/cancel/`** — where the provider sends the customer if they back out before
 paying. It confirms nothing was charged and offers a way to retry or contact us.
 
-**`/payment/notify.php`** — the notification receiver. The provider's servers call this
+**`/payment/notify.php`** — the notification receiver. Green.Money's servers call this
 directly, with no browser involved. It records the notification and answers `200 OK`.
 Source: `public/payment/notify.php` (copied into the deployed site by the build, so it
 is never wiped by a redeploy).
@@ -122,18 +145,18 @@ Then run one real minimum-value transaction end to end and confirm all three: th
 success page renders with the reference, the notification email arrives, and the
 transaction appears in the provider's dashboard.
 
-## If a payment button is added later
+## If the provider changes
 
-The site's Content-Security-Policy currently blocks form submissions to any other
-origin, so a "Pay now" form posting to the gateway would fail silently. Build with the
-gateway's origin set:
+`https://greenbyphone.com` is allowed in the Content-Security-Policy in both
+`next.config.mjs` and `scripts/build-static.mjs`. For a different or additional
+origin, build with it set:
 
 ```bash
 PAYMENT_GATEWAY_ORIGIN=https://checkout.example.com npm run build:static
 ```
 
-That adds the origin to `form-action`, `connect-src`, and `frame-src` in the generated
-`.htaccess`.
+That adds the origin to `script-src`, `form-action`, `connect-src`, `frame-src` and
+`img-src`. Without it, the browser silently blocks the checkout.
 
 ## Troubleshooting
 

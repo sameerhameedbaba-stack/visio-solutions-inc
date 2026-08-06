@@ -50,6 +50,7 @@ export const footerColumns: FooterColumn[] = [
       { label: 'About', href: '/about' },
       { label: 'How we work', href: '/how-we-work' },
       { label: 'Contact', href: '/contact' },
+      { label: 'Make a payment', href: '/payment' },
     ],
   },
   {

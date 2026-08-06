@@ -22,15 +22,22 @@ if (gatewayOrigin && !gatewayOriginIsValid) {
 }
 const gatewaySource = gatewayOriginIsValid ? ` ${gatewayOrigin}` : '';
 
+// The payment provider in use: Green.Money's hosted checkout. /payment links out
+// to it, so navigation alone needs no policy change — but allowing it here means
+// the provider's own form snippet and embedded checkout also work if either is
+// ever preferred over the link.
+const paymentGateway = 'https://greenbyphone.com';
+const paymentSources = ` ${paymentGateway}${gatewaySource}`;
+
 const ContentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${gatewaySource}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob:",
+  `img-src 'self' data: blob:${paymentSources}`,
   "font-src 'self' data:",
-  `connect-src 'self'${gatewaySource}`,
-  `form-action 'self'${gatewaySource}`,
-  `frame-src 'self'${gatewaySource}`,
+  `connect-src 'self'${paymentSources}`,
+  `form-action 'self'${paymentSources}`,
+  `frame-src 'self'${paymentSources}`,
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "object-src 'none'",

@@ -10,7 +10,8 @@ export const dynamic = 'force-static';
 /**
  * Generated sitemap covering all indexable routes. `staticRoutes` is a hand-
  * maintained allowlist, so the noindex routes — /thank-you, /404 and the
- * /payment/* gateway return pages — are excluded by omission.
+ * /payment/success and /payment/cancel gateway return pages — are excluded by
+ * omission. /payment itself is a normal, findable page.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -26,6 +27,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       { path: '/use-cases', priority: 0.6, changeFrequency: 'monthly' },
       { path: '/insights', priority: 0.7, changeFrequency: 'weekly' },
       { path: '/contact', priority: 0.8, changeFrequency: 'monthly' },
+      { path: '/payment', priority: 0.4, changeFrequency: 'monthly' },
       { path: '/privacy', priority: 0.3, changeFrequency: 'monthly' },
       { path: '/terms', priority: 0.3, changeFrequency: 'monthly' },
       { path: '/cookies', priority: 0.3, changeFrequency: 'monthly' },

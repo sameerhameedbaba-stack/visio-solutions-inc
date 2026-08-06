@@ -72,6 +72,18 @@ test.describe('FAQ accordion', () => {
 });
 
 test.describe('payment gateway return pages', () => {
+  test('payment page offers a checkout link to the provider', async ({ page }) => {
+    await page.goto('/payment');
+    await expect(page.locator('h1')).toHaveCount(1);
+    const payNow = page.getByRole('link', { name: /pay now/i });
+    await expect(payNow).toBeVisible();
+    // Must point at the configured Green.Money button, not a placeholder.
+    await expect(payNow).toHaveAttribute(
+      'href',
+      'https://greenbyphone.com/eCheck/eCheck.aspx?GreenButton_id=16783&TransactionID=',
+    );
+  });
+
   test('success page renders and shows the gateway reference from the query string', async ({
     page,
   }) => {

@@ -7,6 +7,8 @@ import {
 } from '@/lib/payment-notification';
 import { metadata as successMeta } from '@/app/payment/success/page';
 import { metadata as cancelMeta } from '@/app/payment/cancel/page';
+import { metadata as paymentMeta } from '@/app/payment/page';
+import robots from '@/app/robots';
 
 describe('sanitizeReference', () => {
   it('keeps identifier-safe characters', () => {
@@ -179,5 +181,26 @@ describe('payment page metadata', () => {
   it('does not describe the payment as verified or settled', () => {
     const claims = /\b(verified|settled|confirmed|guaranteed)\b/i;
     expect(successMeta.description ?? '').not.toMatch(claims);
+  });
+});
+
+describe('payment page indexability', () => {
+  it('leaves the payment page itself indexable', () => {
+    expect(paymentMeta.robots).toMatchObject({ index: true });
+  });
+
+  it('does not disallow /payment, which would hide the page customers need', () => {
+    const rules = robots().rules;
+    const disallow = (Array.isArray(rules) ? rules : [rules]).flatMap((rule) => {
+      const value = rule.disallow;
+      return value === undefined ? [] : Array.isArray(value) ? value : [value];
+    });
+    // A bare '/payment/' prefix would also block '/payment/' itself.
+    expect(disallow).not.toContain('/payment/');
+    expect(disallow).not.toContain('/payment');
+    // The per-transaction routes and the endpoint stay blocked.
+    expect(disallow).toContain('/payment/success');
+    expect(disallow).toContain('/payment/cancel');
+    expect(disallow).toContain('/payment/notify.php');
   });
 });
