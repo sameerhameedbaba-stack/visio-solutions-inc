@@ -15,6 +15,9 @@
 /out/
 next-env.d.ts
 
+# deployable archive of out/ — regenerate with `npm run build:static` then zip it
+/visiosolutions-site.zip
+
 # production
 /build
 
