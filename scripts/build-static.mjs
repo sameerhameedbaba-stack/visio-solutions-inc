@@ -40,7 +40,7 @@ const gatewaySource = gatewayOrigin ? ` ${gatewayOrigin}` : '';
 
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline'${gatewaySource}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self' data:",
