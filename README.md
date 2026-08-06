@@ -60,17 +60,19 @@ See `.env.example`. Notable ones:
 - `CONTACT_EMAIL_PROVIDER` — `console` (default, logs) or `resend`.
 - `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` — email delivery.
 - `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` — enables privacy-conscious analytics when set.
+- `PAYMENT_GATEWAY_ORIGIN` — build-time; adds the gateway's checkout origin to the CSP.
+- `PAYMENT_IPN_SECRET` — optional shared secret for `/api/payment/notify` on a Node host.
 
 ## Documentation
 
 Strategy and delivery documents live in the repository root: `CURRENT_STATE_AUDIT.md`,
 `WEBSITE_STRATEGY.md`, `SITEMAP.md`, `CONTENT_ARCHITECTURE.md`, `DESIGN_SYSTEM.md`,
 `IMPLEMENTATION_PLAN.md`, `SEO_PLAN.md`, `MISSING_INPUTS.md`, `QA_REPORT.md`,
-`LAUNCH_CHECKLIST.md`.
+`LAUNCH_CHECKLIST.md`, `PAYMENT_GATEWAY_SETUP.md`.
 
 ## Truth and claims policy
 
 This site contains **no fabricated proof** — no invented clients, testimonials,
 logos, metrics, or certifications. Illustrative scenarios are always visibly
-labelled "Illustrative use case." Legal pages are drafts pending attorney review.
+labelled "Illustrative example." Legal pages are drafts pending attorney review.
 See `MISSING_INPUTS.md` for what real business inputs are still required.

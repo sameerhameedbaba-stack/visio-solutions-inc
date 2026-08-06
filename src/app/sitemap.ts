@@ -7,7 +7,11 @@ import { articleSlugs } from '@/content/insights';
 // Allow generation under `output: export` (static hosting).
 export const dynamic = 'force-static';
 
-/** Generated sitemap covering all indexable routes. Thank-you/404 are excluded. */
+/**
+ * Generated sitemap covering all indexable routes. `staticRoutes` is a hand-
+ * maintained allowlist, so the noindex routes — /thank-you, /404 and the
+ * /payment/* gateway return pages — are excluded by omission.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 

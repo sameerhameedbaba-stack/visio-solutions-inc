@@ -17,7 +17,7 @@ review · 🔎 verify against live production.
 ## SEO
 
 - [x] ✅ `sitemap.xml` generated
-- [x] ✅ `robots.txt` generated (disallows `/thank-you`, `/api/`)
+- [x] ✅ `robots.txt` generated (disallows `/thank-you`, `/payment/`, `/api/`)
 - [x] ✅ Canonical tags on every route
 - [x] ✅ Unique metadata (title/description) per route; `noindex` on
       thank-you/404
@@ -39,6 +39,32 @@ review · 🔎 verify against live production.
 - [ ] 🔎 Production submission test (real inquiry delivered to `CONTACT_TO_EMAIL`)
 - [ ] 👤 Privacy notice on the form approved
 - [ ] 👤 Form-notification ownership assigned (who monitors inquiries)
+
+## Payment gateway
+
+See `PAYMENT_GATEWAY_SETUP.md` for the three URLs to paste into the provider's
+merchant configuration form and the full rationale.
+
+- [x] ✅ `/payment/success/` and `/payment/cancel/` built, `noindex`, excluded from
+      the sitemap, served `no-store`
+- [x] ✅ `/payment/notify.php` notification receiver (bounded input, redacted
+      bank/credential fields, log written outside the web root, rate-limited email)
+- [x] ✅ Matching Next.js route handler for Node deployments
+- [ ] ⚙️ Three URLs registered in the provider's form, using **`https://`** and the
+      apex domain
+- [ ] 👤 Ask the provider: notification method (GET/POST), full parameter list,
+      source IP ranges, and retry behaviour
+- [ ] ⚙️ Optional `shared_secret` and/or `allowed_ips` configured in
+      `notify-config.php` (kept **outside** `public_html`, never committed)
+- [ ] 🔎 `curl` the notification URL on production; confirm `200 OK`, the log line,
+      and the notification email
+- [ ] 🔎 One real minimum-value transaction end to end
+- [ ] 👤 Reconciliation owner assigned — a notification is not proof of settlement,
+      and e-check/ACH debits can be returned days later
+- [ ] 👤 Refund / cancellation policy page, if the provider requires one for
+      merchant review (not built)
+- [ ] ⚙️ `PAYMENT_GATEWAY_ORIGIN` set at build time if a "Pay now" form is added
+      (otherwise CSP `form-action` blocks the submission)
 
 ## Legal
 

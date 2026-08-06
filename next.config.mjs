@@ -7,14 +7,30 @@
 // surface is minimal. A nonce-based CSP is documented as a future hardening step
 // in SECURITY / LAUNCH_CHECKLIST.md (it would force dynamic rendering and remove
 // the static-generation performance benefit).
+// Origin of the payment gateway's hosted checkout, when one is wired up. Without
+// it, `form-action 'self'` silently blocks a "Pay now" form posting to the
+// gateway. Kept in step with the same variable in scripts/build-static.mjs,
+// which generates the equivalent policy for static hosting.
+const gatewayOrigin = (process.env.PAYMENT_GATEWAY_ORIGIN ?? '').trim();
+const gatewayOriginIsValid = /^https:\/\/[a-z0-9.-]+(:\d+)?$/i.test(gatewayOrigin);
+if (gatewayOrigin && !gatewayOriginIsValid) {
+  // Ignored rather than fatal so a bad value cannot break a deploy — but say so,
+  // otherwise the checkout would silently stay blocked.
+  console.warn(
+    `[csp] Ignoring PAYMENT_GATEWAY_ORIGIN="${gatewayOrigin}" — expected a bare https origin.`,
+  );
+}
+const gatewaySource = gatewayOriginIsValid ? ` ${gatewayOrigin}` : '';
+
 const ContentSecurityPolicy = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self' data:",
-  "connect-src 'self'",
-  "form-action 'self'",
+  `connect-src 'self'${gatewaySource}`,
+  `form-action 'self'${gatewaySource}`,
+  `frame-src 'self'${gatewaySource}`,
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "object-src 'none'",

@@ -27,7 +27,7 @@ Legend: **Idx** = indexation recommendation.
 | `/industries`                              | Adaptable sector patterns             | All               | Industry technology solutions         | Book a strategy call  | Explore services     | `/`          | index       |
 | `/how-we-work`                             | Reduce buyer risk                     | All               | Delivery process                      | Book a strategy call  | Discuss your project | `/`          | index       |
 | `/about`                                   | Philosophy & principles               | All               | About the company                     | Book a strategy call  | See how we work      | `/`          | index       |
-| `/case-studies`                            | Problem types + illustrative cases    | All               | Case studies                          | Discuss your project  | Book a strategy call | `/`          | index       |
+| `/use-cases`                               | Problem types + illustrative cases    | All               | Use cases                             | Discuss your project  | Book a strategy call | `/`          | index       |
 | `/insights`                                | Article index                         | All               | Technology insights                   | Book a strategy call  | Explore services     | `/`          | index       |
 | `/insights/[slug]`                         | Evergreen articles (×3)               | All               | Topic-specific                        | Book a strategy call  | Discuss your project | `/insights`  | index       |
 | `/contact`                                 | B2B lead capture                      | High-intent       | Contact / start project               | Send inquiry          | —                    | `/`          | index       |
@@ -36,6 +36,9 @@ Legend: **Idx** = indexation recommendation.
 | `/terms`                                   | Terms of Use (draft)                  | All               | Legal                                 | —                     | —                    | `/`          | index       |
 | `/cookies`                                 | Cookie Policy (draft)                 | All               | Legal                                 | —                     | —                    | `/`          | index       |
 | `/404` (not-found)                         | Custom not-found                      | All               | —                                     | Back to home          | Explore services     | —            | **noindex** |
+| `/payment/success`                         | Payment gateway return page           | Paying customers  | —                                     | Contact us            | Back to home         | —            | **noindex** |
+| `/payment/cancel`                          | Payment cancelled return page         | Paying customers  | —                                     | Contact us            | Back to home         | —            | **noindex** |
+| `/payment/notify.php`                      | Gateway notification receiver (PHP)   | Gateway servers   | —                                     | —                     | —                    | —            | **noindex** |
 
 ## Notes
 
