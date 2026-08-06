@@ -10,8 +10,10 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        // Keep confirmation and API endpoints out of the index.
-        disallow: ['/thank-you', '/api/'],
+        // Keep confirmation pages, payment return pages and API endpoints out
+        // of the index. The payment routes are per-transaction dead ends and
+        // carry gateway reference IDs in their query strings.
+        disallow: ['/thank-you', '/payment/', '/api/'],
       },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,

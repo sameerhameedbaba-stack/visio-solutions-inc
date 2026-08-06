@@ -29,6 +29,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# payment IPN — real config carries a shared secret; logs carry transaction data
+/visio-payment-ipn/
+public/payment/notify-config.php
+
 # local env files — never commit real secrets
 .env
 .env*.local

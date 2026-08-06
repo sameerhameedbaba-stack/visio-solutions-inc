@@ -71,6 +71,54 @@ test.describe('FAQ accordion', () => {
   });
 });
 
+test.describe('payment gateway return pages', () => {
+  test('success page renders and shows the gateway reference from the query string', async ({
+    page,
+  }) => {
+    await page.goto('/payment/success?ChkID=8821&TransID=T-1');
+    await expect(page.locator('h1')).toHaveCount(1);
+    await expect(page.getByRole('heading', { name: /your payment was submitted/i })).toBeVisible();
+    await expect(page.getByText('8821')).toBeVisible();
+    await expect(page.getByText('T-1')).toBeVisible();
+  });
+
+  test('success page hides the reference block when the gateway sent no identifiers', async ({
+    page,
+  }) => {
+    await page.goto('/payment/success');
+    await expect(page.locator('h1')).toHaveCount(1);
+    await expect(page.getByText(/your reference/i)).toBeHidden();
+  });
+
+  test('reference values from the query string are sanitised, never executed', async ({ page }) => {
+    const dialogs: string[] = [];
+    page.on('dialog', (dialog) => {
+      dialogs.push(dialog.message());
+      void dialog.dismiss();
+    });
+    await page.goto('/payment/success?ChkID=%3Cscript%3Ealert(1)%3C%2Fscript%3E');
+    await expect(page.getByText('scriptalert1script')).toBeVisible();
+    // No script element was injected and no dialog fired.
+    expect(dialogs).toEqual([]);
+    expect(await page.locator('#reference-injection').count()).toBe(0);
+  });
+
+  test('cancel page states that nothing was charged', async ({ page }) => {
+    await page.goto('/payment/cancel');
+    await expect(page.locator('h1')).toHaveCount(1);
+    await expect(page.getByRole('heading', { name: /payment cancelled/i })).toBeVisible();
+    await expect(page.getByText(/was not submitted/i)).toBeVisible();
+    await expect(page.getByRole('link', { name: /contact us/i }).first()).toBeVisible();
+  });
+
+  test('both return pages are marked noindex', async ({ page }) => {
+    for (const path of ['/payment/success', '/payment/cancel']) {
+      await page.goto(path);
+      await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+    }
+  });
+});
+
 test.describe('contact form', () => {
   test('blocks submission and shows an error summary when required fields are empty', async ({
     page,
