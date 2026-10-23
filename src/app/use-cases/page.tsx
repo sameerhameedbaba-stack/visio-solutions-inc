@@ -75,8 +75,8 @@ export default function UseCasesPage() {
             intro="Each example shows a situation, a possible approach, the capabilities involved, and the type of value it produces."
           />
           <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {illustrativeUseCases.map((useCase) => (
-              <UseCaseCard key={useCase.title} useCase={useCase} />
+            {illustrativeUseCases.map((useCase, index) => (
+              <UseCaseCard key={useCase.title} useCase={useCase} index={index} />
             ))}
           </div>
         </Container>

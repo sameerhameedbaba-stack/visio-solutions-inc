@@ -6,6 +6,14 @@ interface Feature {
   description: string;
 }
 
+/** Accent gradients cycled across a grid so every list reads in full colour. */
+const ACCENTS = [
+  'linear-gradient(135deg, #2563EB, #06B6D4)',
+  'linear-gradient(135deg, #7C3AED, #DB2777)',
+  'linear-gradient(135deg, #0D9488, #10B981)',
+  'linear-gradient(135deg, #F97316, #E11D48)',
+] as const;
+
 /** Generic feature/benefit/capability grid used across pages. */
 export function FeatureGrid({
   features,
@@ -24,23 +32,38 @@ export function FeatureGrid({
 
   return (
     <ul className={cn('grid gap-5', cols)}>
-      {features.map((feature, index) => (
-        <Reveal as="li" key={feature.title} delay={index * 40}>
-          <div
-            className={cn(
-              'h-full rounded-card p-6',
-              tone === 'surface'
-                ? 'border border-border bg-surface shadow-card'
-                : 'bg-surface-subtle',
-            )}
-          >
-            <h3 className="text-base font-semibold text-foreground">{feature.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              {feature.description}
-            </p>
-          </div>
-        </Reveal>
-      ))}
+      {features.map((feature, index) => {
+        const accent = ACCENTS[index % ACCENTS.length];
+        return (
+          <Reveal as="li" key={feature.title} delay={(index % 3) * 70} className="h-full">
+            <div
+              className={cn(
+                'group relative h-full overflow-hidden rounded-card p-6 transition-all duration-300 ease-natural hover:-translate-y-1 sm:p-7',
+                tone === 'surface'
+                  ? 'border border-border bg-surface shadow-lift hover:shadow-glow'
+                  : 'bg-surface-subtle',
+              )}
+            >
+              <span
+                className="absolute inset-x-0 top-0 h-1 opacity-80 transition-opacity group-hover:opacity-100"
+                style={{ backgroundImage: accent }}
+                aria-hidden="true"
+              />
+              <span
+                className="inline-flex h-9 min-w-9 items-center justify-center rounded-xl px-2 font-display text-sm font-extrabold text-white shadow-sm"
+                style={{ backgroundImage: accent }}
+                aria-hidden="true"
+              >
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <h3 className="mt-5 text-lg font-bold text-foreground">{feature.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                {feature.description}
+              </p>
+            </div>
+          </Reveal>
+        );
+      })}
     </ul>
   );
 }

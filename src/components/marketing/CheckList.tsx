@@ -15,8 +15,8 @@ export function CheckList({
     <ul className={cn('grid gap-3', columns === 2 && 'sm:grid-cols-2', className)}>
       {items.map((item) => (
         <li key={item} className="flex items-start gap-3">
-          <span className="mt-0.5 inline-flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-success/10 text-success">
-            <Check className="h-3.5 w-3.5" aria-hidden="true" />
+          <span className="mt-0.5 inline-flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,#2563EB,#7C3AED)] text-white shadow-sm">
+            <Check className="h-3 w-3" strokeWidth={3} aria-hidden="true" />
           </span>
           <span className="text-muted-foreground">{item}</span>
         </li>

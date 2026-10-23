@@ -1,9 +1,12 @@
 /**
- * Inline script that sets the theme class before paint to avoid a flash of the
- * wrong theme. Reads a stored preference, falling back to the OS setting.
- * Rendered in <head>. Kept tiny and dependency-free.
+ * Inline script run in <head> before first paint. It:
+ *   - sets the theme class from a stored preference, falling back to the OS
+ *     setting, so the wrong theme never flashes;
+ *   - adds `js` to <html>, which lets CSS hide animated content up front only
+ *     when JavaScript is actually available to reveal it again.
+ * Kept tiny and dependency-free.
  */
-const script = `(function(){try{var t=localStorage.getItem('theme');var m=window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||(!t&&m)){document.documentElement.classList.add('dark');}else{document.documentElement.classList.remove('dark');}}catch(e){}})();`;
+const script = `(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('theme');var m=window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||(!t&&m)){d.classList.add('dark');}else{d.classList.remove('dark');}}catch(e){}})();`;
 
 export function ThemeScript() {
   return <script dangerouslySetInnerHTML={{ __html: script }} />;

@@ -196,8 +196,8 @@ export default function HomePage() {
             intro="Representative scenarios that show how the layers combine to solve a defined problem."
           />
           <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {illustrativeUseCases.slice(0, 3).map((useCase) => (
-              <UseCaseCard key={useCase.title} useCase={useCase} />
+            {illustrativeUseCases.slice(0, 3).map((useCase, index) => (
+              <UseCaseCard key={useCase.title} useCase={useCase} index={index} />
             ))}
           </div>
           <p className="mt-6">

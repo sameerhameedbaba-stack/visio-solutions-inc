@@ -7,6 +7,9 @@ import { footerColumns } from '@/content/navigation';
 import { primaryNav, servicesMegaMenu } from '@/content/navigation';
 import { ctas } from '@/content/ctas';
 import { Button } from '@/components/ui/Button';
+import { pillarTheme } from '@/components/marketing/pillar-theme';
+import { getLenis } from '@/lib/smooth-scroll';
+import { cn } from '@/lib/utils';
 
 interface MobileNavProps {
   open: boolean;
@@ -15,7 +18,7 @@ interface MobileNavProps {
 
 const focusableSelector = 'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])';
 
-/** Full-screen mobile navigation with focus trapping and scroll lock. */
+/** Full-screen mobile navigation with focus trapping and scroll lock (native and Lenis). */
 export function MobileNav({ open, onClose }: MobileNavProps) {
   const panelRef = useRef<HTMLDivElement | null>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
@@ -26,6 +29,8 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
     previouslyFocused.current = document.activeElement as HTMLElement | null;
     const panel = panelRef.current;
     document.body.style.overflow = 'hidden';
+    // Lenis scrolls the window programmatically, so overflow alone will not stop it.
+    getLenis()?.stop();
 
     // Move focus into the panel.
     const focusables = panel?.querySelectorAll<HTMLElement>(focusableSelector);
@@ -57,6 +62,7 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
     return () => {
       document.removeEventListener('keydown', onKeyDown);
       document.body.style.overflow = '';
+      getLenis()?.start();
       previouslyFocused.current?.focus();
     };
   }, [open, onClose]);
@@ -67,20 +73,22 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[60] lg:hidden"
+      className="pointer-events-auto fixed inset-0 z-[60] lg:hidden"
       role="dialog"
       aria-modal="true"
       aria-label="Site menu"
     >
       <div
-        className="absolute inset-0 bg-navy/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-ink/70 backdrop-blur-sm"
         onClick={onClose}
         aria-hidden="true"
       />
       <div
         ref={panelRef}
+        data-lenis-prevent=""
         className="absolute inset-y-0 right-0 flex w-full max-w-sm flex-col overflow-y-auto bg-surface shadow-float"
       >
+        <div className="spectrum-line" aria-hidden="true" />
         <div className="flex items-center justify-between border-b border-border px-5 py-4">
           <span className="text-eyebrow font-semibold uppercase tracking-wider text-subtle-foreground">
             Menu
@@ -117,7 +125,7 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
             <div className="mt-2 flex flex-col gap-4">
               {servicesMegaMenu.map((column) => (
                 <div key={column.pillarId}>
-                  <p className="px-3 text-sm font-semibold text-muted-foreground">
+                  <p className={cn('px-3 text-sm font-bold', pillarTheme[column.pillarId].text)}>
                     {column.heading}
                   </p>
                   <ul className="mt-1 flex flex-col">

@@ -2,23 +2,27 @@ import Link from 'next/link';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
-type Variant = 'primary' | 'secondary' | 'ghost' | 'onDark';
+type Variant = 'primary' | 'secondary' | 'ghost' | 'onDark' | 'glass';
 type Size = 'md' | 'lg';
 
 const base =
-  'inline-flex items-center justify-center gap-2 font-semibold rounded-input transition-colors duration-200 ease-natural focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-60 disabled:pointer-events-none whitespace-nowrap';
+  'group/button relative inline-flex items-center justify-center gap-2 overflow-hidden font-semibold rounded-full transition-[background-position,transform,box-shadow,background-color,color] duration-300 ease-natural focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spectrum-violet focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98] disabled:opacity-60 disabled:pointer-events-none whitespace-nowrap';
 
 const sizes: Record<Size, string> = {
   md: 'min-h-[44px] px-5 text-[0.95rem]',
-  lg: 'min-h-[52px] px-7 text-base',
+  lg: 'min-h-[54px] px-7 text-base',
 };
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-brand text-white hover:bg-brand-hover active:bg-brand-hover shadow-sm',
+  // Blue → violet → magenta; white text stays above 4.5:1 across the whole sweep.
+  primary:
+    'bg-[linear-gradient(100deg,#2563EB_0%,#7C3AED_50%,#DB2777_100%)] bg-[length:200%_100%] bg-left text-white shadow-glow hover:bg-right hover:-translate-y-0.5',
   secondary:
-    'bg-surface text-foreground border border-border hover:border-brand hover:text-accent active:bg-surface-subtle',
-  ghost: 'text-accent hover:bg-brand/10 active:bg-brand/15',
-  onDark: 'bg-white text-navy hover:bg-slate-100 active:bg-slate-200',
+    'bg-surface text-foreground ring-1 ring-inset ring-border shadow-sm hover:ring-spectrum-violet/50 hover:text-accent',
+  ghost: 'text-accent hover:bg-spectrum-violet/10 active:bg-spectrum-violet/15',
+  onDark: 'bg-white text-ink shadow-lift hover:-translate-y-0.5 hover:bg-slate-100',
+  glass:
+    'bg-white/10 text-white ring-1 ring-inset ring-white/25 backdrop-blur-md hover:bg-white/20 hover:ring-white/40',
 };
 
 interface CommonProps {

@@ -13,6 +13,7 @@ import { FAQSection } from '@/components/marketing/FAQSection';
 import { RelatedServices } from '@/components/marketing/RelatedServices';
 import { CTASection } from '@/components/marketing/CTASection';
 import { pillarIcons } from '@/components/marketing/icons';
+import { pillarTheme } from '@/components/marketing/pillar-theme';
 import { BreadcrumbSchema, FaqSchema, ServiceSchema } from '@/components/seo/StructuredData';
 
 export function generateStaticParams() {
@@ -61,6 +62,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         headline={service.headline}
         intro={service.intro}
         breadcrumbs={breadcrumbs}
+        mesh={pillarTheme[service.pillar].mesh}
         actions={
           <>
             <CtaButton cta={service.primaryCta} size="lg" withArrow />
@@ -68,8 +70,11 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           </>
         }
         aside={
-          <div className="rounded-feature border border-border bg-surface p-8 shadow-card">
-            <span className="inline-flex h-12 w-12 items-center justify-center rounded-card bg-brand/10 text-accent">
+          <div className="glass rounded-feature border border-white/10 p-8 shadow-glow-lg">
+            <span
+              className="inline-flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-lg"
+              style={{ backgroundImage: pillarTheme[service.pillar].gradient }}
+            >
               <Icon className="h-6 w-6" aria-hidden="true" />
             </span>
             <p className="mt-5 text-sm font-semibold uppercase tracking-wide text-subtle-foreground">
@@ -79,7 +84,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             <ul className="mt-5 flex flex-col gap-2 border-t border-border pt-5 text-sm text-muted-foreground">
               {service.whenAppropriate.slice(0, 3).map((item) => (
                 <li key={item} className="flex gap-2">
-                  <span aria-hidden="true" className="text-accent">
+                  <span aria-hidden="true" className={pillarTheme[service.pillar].text}>
                     →
                   </span>
                   {item}
@@ -148,8 +153,8 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             intro="Representative scenarios showing how the service applies in practice. Each is labelled illustrative."
           />
           <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {service.useCases.map((useCase) => (
-              <UseCaseCard key={useCase.title} useCase={useCase} />
+            {service.useCases.map((useCase, index) => (
+              <UseCaseCard key={useCase.title} useCase={useCase} index={index} />
             ))}
           </div>
         </Container>

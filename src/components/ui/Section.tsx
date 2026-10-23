@@ -5,7 +5,7 @@ interface SectionProps {
   children: ReactNode;
   className?: string;
   /** Background treatment. */
-  tone?: 'base' | 'subtle' | 'surface' | 'navy';
+  tone?: 'base' | 'subtle' | 'surface' | 'navy' | 'ink';
   size?: 'default' | 'sm';
   id?: string;
   ariaLabelledby?: string;
@@ -16,7 +16,9 @@ const tones = {
   base: 'bg-background',
   subtle: 'bg-surface-subtle',
   surface: 'bg-surface',
-  navy: 'bg-navy text-slate-200',
+  // Ink bands stay dark in both themes and re-theme their children (globals.css).
+  navy: 'ink relative isolate overflow-hidden',
+  ink: 'ink relative isolate overflow-hidden',
 };
 
 export function Section({

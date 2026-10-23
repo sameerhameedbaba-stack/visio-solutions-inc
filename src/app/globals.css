@@ -4,44 +4,67 @@
 
 /*
  * Design tokens — theme-aware neutrals as RGB channels so Tailwind opacity
- * modifiers work (e.g. bg-surface/70). Brand + semantic colors live in
+ * modifiers work (e.g. bg-surface/70). Fixed brand and spectrum hues live in
  * tailwind.config.ts. See DESIGN_SYSTEM.md for the full system and contrast notes.
+ *
+ * Every text colour here meets WCAG AA on the surface it is designed for. The
+ * vivid spectrum hues are decorative (fills, glows, gradients); text that needs
+ * a hue uses the darker/lighter `--pillar-*` and `--spectrum-*` values below.
  */
 @layer base {
   :root {
-    --background: 247 249 252; /* #F7F9FC */
+    --background: 247 248 253; /* #F7F8FD */
     --surface: 255 255 255; /* #FFFFFF */
-    --surface-subtle: 238 243 248; /* #EEF3F8 */
+    --surface-subtle: 238 241 251; /* #EEF1FB */
     --surface-raised: 255 255 255; /* #FFFFFF */
-    --border: 220 227 236; /* #DCE3EC */
-    --foreground: 16 24 40; /* #101828 */
-    --muted-foreground: 52 64 84; /* #344054 */
-    --subtle-foreground: 90 100 120; /* accessible muted */
+    --border: 222 227 240; /* #DEE3F0 */
+    --foreground: 11 16 36; /* #0B1024 */
+    --muted-foreground: 52 62 88; /* #343E58 — 10.2:1 on white */
+    --subtle-foreground: 84 95 122; /* #545F7A — 6.3:1 on white */
     /* Interactive accent + semantic text colors, tuned for AA on light surfaces. */
-    --accent: 29 78 216; /* #1D4ED8 */
+    --accent: 67 56 202; /* #4338CA indigo — 7.9:1 on white */
     --success: 21 117 81; /* #157551 */
     --warning: 122 78 0; /* #7A4E00 */
     --error: 196 50 50; /* #C43232 */
     --info: 29 78 216; /* #1D4ED8 */
+    /* One signature hue per capability, darkened for text on light surfaces. */
+    --pillar-ai: 109 40 217; /* #6D28D9 violet — 7.1:1 */
+    --pillar-software: 29 78 216; /* #1D4ED8 blue — 6.7:1 */
+    --pillar-security: 15 118 110; /* #0F766E teal — 5.5:1 */
+    --pillar-growth: 194 65 12; /* #C2410C orange — 5.2:1 */
+    /* Brand spectrum for gradient text; every stop is >= 3:1 (large text) on white. */
+    --spectrum-1: #2563eb;
+    --spectrum-2: #7c3aed;
+    --spectrum-3: #db2777;
+    --spectrum-4: #ea580c;
     --ease-natural: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --header-h: 5.25rem;
     color-scheme: light;
   }
 
   .dark {
-    --background: 8 17 31; /* #08111F */
-    --surface: 16 27 45; /* #101B2D */
-    --surface-subtle: 22 35 56; /* #162338 */
-    --surface-raised: 22 35 56; /* #162338 */
-    --border: 42 56 80; /* #2A3850 */
+    --background: 7 11 24; /* #070B18 */
+    --surface: 14 21 40; /* #0E1528 */
+    --surface-subtle: 20 29 54; /* #141D36 */
+    --surface-raised: 20 29 54; /* #141D36 */
+    --border: 36 48 82; /* #243052 */
     --foreground: 248 250 252; /* #F8FAFC */
-    --muted-foreground: 201 212 229; /* #C9D4E5 */
-    --subtle-foreground: 148 163 184; /* #94A3B8 */
+    --muted-foreground: 199 207 226; /* #C7CFE2 */
+    --subtle-foreground: 150 162 194; /* #96A2C2 */
     /* Lighter accent + semantic text colors for AA on dark surfaces. */
-    --accent: 96 165 250; /* #60A5FA */
+    --accent: 165 180 252; /* #A5B4FC */
     --success: 52 211 153; /* #34D399 */
     --warning: 245 158 11; /* #F59E0B */
     --error: 248 113 113; /* #F87171 */
     --info: 96 165 250; /* #60A5FA */
+    --pillar-ai: 196 181 253; /* #C4B5FD */
+    --pillar-software: 147 197 253; /* #93C5FD */
+    --pillar-security: 94 234 212; /* #5EEAD4 */
+    --pillar-growth: 253 186 116; /* #FDBA74 */
+    --spectrum-1: #60a5fa;
+    --spectrum-2: #a78bfa;
+    --spectrum-3: #f472b6;
+    --spectrum-4: #fb923c;
     color-scheme: dark;
   }
 
@@ -50,7 +73,7 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    /* No `scroll-behavior: smooth`: Lenis owns smoothing and the two conflict. */
     -webkit-text-size-adjust: 100%;
   }
 
@@ -62,6 +85,11 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Clear the floating header on every page; heroes opt back under it. */
+  main {
+    padding-top: var(--header-h);
+  }
+
   h1,
   h2,
   h3,
@@ -70,6 +98,13 @@
   h6 {
     color: rgb(var(--foreground));
     text-wrap: balance;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display), var(--font-inter), system-ui, sans-serif;
+    letter-spacing: -0.025em;
   }
 
   p {
@@ -85,9 +120,6 @@
 
   /* Respect reduced-motion: disable non-essential movement. */
   @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
     *,
     *::before,
     *::after {
@@ -99,7 +131,7 @@
   }
 
   ::selection {
-    background-color: theme('colors.brand.DEFAULT' / 20%);
+    background-color: theme('colors.spectrum.violet' / 25%);
   }
 }
 
@@ -134,25 +166,166 @@
     text-decoration: underline;
     text-underline-offset: 2px;
   }
+
+  /* Frosted glass panel that adapts to the theme. */
+  .glass {
+    background-color: rgb(var(--surface) / 0.72);
+    -webkit-backdrop-filter: blur(18px) saturate(170%);
+    backdrop-filter: blur(18px) saturate(170%);
+  }
+
+  /*
+   * Ink band: a deep surface that stays dark in both themes, used for the hero,
+   * spotlight sections and the footer. Text on it uses the on-ink tokens.
+   */
+  .ink {
+    /* Re-point the theme tokens at their dark values, so any component placed on
+       an ink band (cards, buttons, links) renders correctly in either theme. */
+    --background: 6 8 22;
+    --surface: 13 18 38;
+    --surface-subtle: 20 27 52;
+    --surface-raised: 20 27 52;
+    --border: 38 49 86;
+    --foreground: 248 250 252;
+    --muted-foreground: 199 207 226;
+    --subtle-foreground: 150 162 194;
+    --accent: 165 180 252;
+    --pillar-ai: 196 181 253;
+    --pillar-software: 147 197 253;
+    --pillar-security: 94 234 212;
+    --pillar-growth: 253 186 116;
+    --spectrum-1: #60a5fa;
+    --spectrum-2: #a78bfa;
+    --spectrum-3: #f472b6;
+    --spectrum-4: #fb923c;
+    background-color: theme('colors.ink.DEFAULT');
+    color: rgb(var(--muted-foreground));
+    color-scheme: dark;
+  }
+  .ink :where(h1, h2, h3, h4) {
+    color: #fff;
+  }
+
+  /*
+   * Colourful animated mesh behind interior page heroes. Pure CSS, so every
+   * interior page gets a vivid header without a WebGL context. The hue comes
+   * from --mesh-a/b/c, which pillar pages override with their signature colour.
+   */
+  .mesh {
+    --mesh-a: theme('colors.spectrum.blue');
+    --mesh-b: theme('colors.spectrum.violet');
+    --mesh-c: theme('colors.spectrum.magenta');
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .mesh::before,
+  .mesh::after {
+    content: '';
+    position: absolute;
+    inset: -40%;
+    background:
+      radial-gradient(closest-side at 22% 30%, var(--mesh-a), transparent 70%),
+      radial-gradient(closest-side at 78% 26%, var(--mesh-b), transparent 70%),
+      radial-gradient(closest-side at 62% 82%, var(--mesh-c), transparent 70%);
+    filter: blur(40px) saturate(160%);
+    opacity: 0.95;
+    animation: mesh-drift 22s ease-in-out infinite alternate;
+  }
+  .mesh::after {
+    background:
+      radial-gradient(closest-side at 70% 60%, var(--mesh-a), transparent 70%),
+      radial-gradient(closest-side at 30% 75%, var(--mesh-c), transparent 70%);
+    opacity: 0.6;
+    animation-duration: 28s;
+    animation-direction: alternate-reverse;
+  }
+
+  /* Fine film grain, layered over colour fields to keep gradients from banding. */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.12;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Gradient hairline used as section dividers and card accents. */
+  .spectrum-line {
+    height: 2px;
+    background-image: theme('backgroundImage.spectrum');
+  }
 }
 
 @layer utilities {
-  /* Section-reveal animation, gated by data attribute + reduced-motion. */
-  .reveal {
-    opacity: 0;
-    transform: translateY(14px);
+  /* Brand-spectrum gradient text that stays legible in both themes. */
+  .text-spectrum {
+    background-image: linear-gradient(
+      100deg,
+      var(--spectrum-1),
+      var(--spectrum-2) 35%,
+      var(--spectrum-3) 68%,
+      var(--spectrum-4)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
   }
-  .reveal[data-visible='true'] {
-    opacity: 1;
-    transform: translateY(0);
-    transition:
-      opacity 0.5s var(--ease-natural),
-      transform 0.5s var(--ease-natural);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .reveal {
-      opacity: 1;
-      transform: none;
+
+  @media (forced-colors: active) {
+    .text-spectrum,
+    .text-spectrum * {
+      color: CanvasText;
+      -webkit-text-fill-color: CanvasText;
+      background: none;
     }
+  }
+}
+
+/*
+ * Scroll reveals (see components/ui/Reveal.tsx).
+ * Hidden up front only when JavaScript is running (`html.js`, set before paint),
+ * so there is no visible-then-hidden flash. If the animation code never starts,
+ * the fallback animation reveals everything after a short wait; once motion is
+ * ready (`html.motion-ready`) GSAP owns the element instead.
+ */
+.js [data-reveal] {
+  opacity: 0;
+}
+.js:not(.motion-ready) [data-reveal] {
+  animation: reveal-fallback 0.6s ease 3s forwards;
+}
+@keyframes reveal-fallback {
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+@media print {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@keyframes mesh-drift {
+  0% {
+    transform: translate3d(-4%, -3%, 0) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translate3d(5%, 2%, 0) rotate(8deg) scale(1.08);
+  }
+  100% {
+    transform: translate3d(-2%, 5%, 0) rotate(-6deg) scale(1.02);
   }
 }
