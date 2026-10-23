@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { pageMetadata } from '@/lib/seo';
 import { Container } from '@/components/ui/Container';
+import { PageHero } from '@/components/marketing/PageHero';
 import { Button } from '@/components/ui/Button';
 import { company } from '@/content/company';
 
@@ -39,47 +40,53 @@ const steps = [
 
 export default function PaymentPage() {
   return (
-    <Container width="prose" className="py-16 sm:py-20">
-      <h1 className="text-h1 font-bold text-foreground">Make a payment</h1>
-      <p className="mt-4 text-body-lg text-muted-foreground">
-        Pay an invoice or an approved quote. Have your invoice to hand — you will be asked for the
-        amount and your invoice number during checkout.
-      </p>
+    <>
+      <PageHero
+        eyebrow="Payments"
+        title="Make a payment"
+        highlight="payment"
+        intro="Pay an invoice or an approved quote. Have your invoice to hand — you will be asked for the amount and your invoice number during checkout."
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Make a payment', path: '/payment' },
+        ]}
+      />
+      <Container width="prose" className="py-14 sm:py-16">
+        <div className="overflow-hidden rounded-feature border border-border bg-surface p-6 shadow-lift sm:p-8">
+          <h2 className="text-h4 font-semibold text-foreground">How it works</h2>
+          <ol className="mt-4 space-y-3">
+            {steps.map((step, index) => (
+              <li key={step} className="flex gap-3 text-muted-foreground">
+                <span
+                  aria-hidden="true"
+                  className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,#2563EB,#7C3AED)] text-small font-semibold text-white"
+                >
+                  {index + 1}
+                </span>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
 
-      <div className="mt-10 rounded-card border border-border bg-surface p-6 sm:p-8">
-        <h2 className="text-h4 font-semibold text-foreground">How it works</h2>
-        <ol className="mt-4 space-y-3">
-          {steps.map((step, index) => (
-            <li key={step} className="flex gap-3 text-muted-foreground">
-              <span
-                aria-hidden="true"
-                className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-subtle text-small font-semibold text-accent"
-              >
-                {index + 1}
-              </span>
-              <span>{step}</span>
-            </li>
-          ))}
-        </ol>
-
-        <div className="mt-8">
-          <Button href={checkoutUrl} size="lg" rel="noopener">
-            Pay now
-          </Button>
+          <div className="mt-8">
+            <Button href={checkoutUrl} size="lg" rel="noopener">
+              Pay now
+            </Button>
+          </div>
         </div>
-      </div>
 
-      <p className="mt-8 text-small text-subtle-foreground">
-        Payments are processed by Green.Money on their own secure checkout. This site does not
-        collect or store your bank or card details. Questions about an invoice? Email{' '}
-        <Link
-          href={`mailto:${company.email}`}
-          className="font-medium text-accent hover:text-brand-hover"
-        >
-          {company.email}
-        </Link>
-        .
-      </p>
-    </Container>
+        <p className="mt-8 text-small text-subtle-foreground">
+          Payments are processed by Green.Money on their own secure checkout. This site does not
+          collect or store your bank or card details. Questions about an invoice? Email{' '}
+          <Link
+            href={`mailto:${company.email}`}
+            className="font-medium text-accent hover:text-brand-hover"
+          >
+            {company.email}
+          </Link>
+          .
+        </p>
+      </Container>
+    </>
   );
 }

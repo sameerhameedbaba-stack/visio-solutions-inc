@@ -119,7 +119,7 @@ export function CapabilityOrbit() {
         return (
           <div key={pillar.id} className="absolute" style={POSITIONS[pillar.id]}>
             <div
-              className="flex animate-float items-center gap-2.5 rounded-2xl border border-white/15 bg-white/[0.08] py-2 pl-2 pr-3.5 shadow-[0_10px_40px_-12px_rgba(0,0,0,.6)] backdrop-blur-md"
+              className="flex animate-float items-center gap-2.5 rounded-2xl border border-white/15 bg-ink/60 py-2 pl-2 pr-3.5 shadow-[0_10px_40px_-12px_rgba(0,0,0,.6)] backdrop-blur-md"
               style={{ animationDelay: `${index * -1.5}s` }}
             >
               <span

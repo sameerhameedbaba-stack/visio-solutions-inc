@@ -56,8 +56,13 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       />
 
       <article>
-        <header className="border-b border-border bg-surface-subtle">
-          <Container width="prose" className="py-12 sm:py-16">
+        <header className="relative overflow-hidden border-b border-border bg-surface-subtle">
+          {/* Soft spectrum wash: colour without competing with long-form reading. */}
+          <div
+            className="pointer-events-none absolute inset-0 bg-spectrum-soft opacity-70"
+            aria-hidden="true"
+          />
+          <Container width="prose" className="relative py-12 sm:py-16">
             <Breadcrumbs items={breadcrumbs} />
             <div className="mt-6 flex items-center gap-3">
               <Badge tone="brand">{article.topic}</Badge>

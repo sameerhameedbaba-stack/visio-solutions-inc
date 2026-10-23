@@ -14,6 +14,14 @@ const ACCENTS = [
   'linear-gradient(135deg, #F97316, #E11D48)',
 ] as const;
 
+/** The same hues, deepened so the white number on each badge clears 4.5:1. */
+const BADGES = [
+  'linear-gradient(135deg, #2563EB, #0E7490)',
+  'linear-gradient(135deg, #7C3AED, #BE185D)',
+  'linear-gradient(135deg, #0F766E, #047857)',
+  'linear-gradient(135deg, #C2410C, #BE123C)',
+] as const;
+
 /** Generic feature/benefit/capability grid used across pages. */
 export function FeatureGrid({
   features,
@@ -34,6 +42,7 @@ export function FeatureGrid({
     <ul className={cn('grid gap-5', cols)}>
       {features.map((feature, index) => {
         const accent = ACCENTS[index % ACCENTS.length];
+        const badge = BADGES[index % BADGES.length];
         return (
           <Reveal as="li" key={feature.title} delay={(index % 3) * 70} className="h-full">
             <div
@@ -51,7 +60,7 @@ export function FeatureGrid({
               />
               <span
                 className="inline-flex h-9 min-w-9 items-center justify-center rounded-xl px-2 font-display text-sm font-extrabold text-white shadow-sm"
-                style={{ backgroundImage: accent }}
+                style={{ backgroundImage: badge }}
                 aria-hidden="true"
               >
                 {String(index + 1).padStart(2, '0')}

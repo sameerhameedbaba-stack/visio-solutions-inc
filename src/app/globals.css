@@ -190,6 +190,10 @@
     --muted-foreground: 199 207 226;
     --subtle-foreground: 150 162 194;
     --accent: 165 180 252;
+    --success: 52 211 153;
+    --warning: 245 158 11;
+    --error: 248 113 113;
+    --info: 96 165 250;
     --pillar-ai: 196 181 253;
     --pillar-software: 147 197 253;
     --pillar-security: 94 234 212;

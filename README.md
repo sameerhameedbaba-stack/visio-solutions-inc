@@ -3,8 +3,10 @@
 The public marketing website for **Visio Solutions Inc.**, an integrated technology
 partner for software, AI, automation, security, and digital growth.
 
-Built with **Next.js 15 (App Router)**, **React 19**, **TypeScript (strict)**, and
-**Tailwind CSS 3**. Statically generated where possible, accessible to WCAG 2.2 AA,
+Built with **Next.js 15 (App Router)**, **React 19**, **TypeScript (strict)** and
+**Tailwind CSS 3**, with motion from **GSAP** (ScrollTrigger, SplitText),
+**Lenis** smooth scrolling and vendored **React Bits** components (see
+`THIRD_PARTY_NOTICES.md`). Statically generated where possible, accessible to WCAG 2.2 AA,
 and secured with a hardened contact pipeline and security headers.
 
 ## Quick start
@@ -68,7 +70,7 @@ See `.env.example`. Notable ones:
 Strategy and delivery documents live in the repository root: `CURRENT_STATE_AUDIT.md`,
 `WEBSITE_STRATEGY.md`, `SITEMAP.md`, `CONTENT_ARCHITECTURE.md`, `DESIGN_SYSTEM.md`,
 `IMPLEMENTATION_PLAN.md`, `SEO_PLAN.md`, `MISSING_INPUTS.md`, `QA_REPORT.md`,
-`LAUNCH_CHECKLIST.md`, `PAYMENT_GATEWAY_SETUP.md`.
+`LAUNCH_CHECKLIST.md`, `PAYMENT_GATEWAY_SETUP.md`, `THIRD_PARTY_NOTICES.md`.
 
 ## Truth and claims policy
 

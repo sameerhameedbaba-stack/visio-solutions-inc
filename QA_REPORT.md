@@ -148,8 +148,8 @@ consultancy rather than a commentary on how carefully it was generated.
   no CaseStudy schema. `/case-studies` now 404s (site not yet live, no inbound links).
 - **Industries → operating contexts:** five operating-context groupings replace
   named-sector framing.
-- **Service pages:** added per-service *What we need from you*, *Common risks*,
-  *Explicitly out of scope*, and *A sensible first phase*.
+- **Service pages:** added per-service _What we need from you_, _Common risks_,
+  _Explicitly out of scope_, and _A sensible first phase_.
 - **Contact form friction:** only full name, work email, project description, and
   consent required; company/phone/service/stage/budget/timeline optional. Honeypot,
   server validation, rate limiting, and status handling unchanged.
@@ -158,12 +158,53 @@ consultancy rather than a commentary on how carefully it was generated.
 
 **Validation after revision**
 
-| Check | Result |
-| --- | --- |
-| `npm run build` | ✅ Compiles; `/use-cases` route added, `/case-studies` removed |
-| `npm run typecheck` | ✅ No errors |
-| `npm run test` (Vitest) | ✅ 37 passed (added minimal-payload + single-suffix guards) |
-| Playwright site E2E | ✅ 16 passed, 2 skipped |
-| axe sweep (8 revised pages × light+dark) | ✅ 0 serious/critical violations |
-| Mobile hero fold (375×812) | ✅ H1 141px, CTA top 551px, no overflow at 320/430 |
-| Title brand-suffix audit | ✅ Exactly one brand mention per route |
+| Check                                    | Result                                                         |
+| ---------------------------------------- | -------------------------------------------------------------- |
+| `npm run build`                          | ✅ Compiles; `/use-cases` route added, `/case-studies` removed |
+| `npm run typecheck`                      | ✅ No errors                                                   |
+| `npm run test` (Vitest)                  | ✅ 37 passed (added minimal-payload + single-suffix guards)    |
+| Playwright site E2E                      | ✅ 16 passed, 2 skipped                                        |
+| axe sweep (8 revised pages × light+dark) | ✅ 0 serious/critical violations                               |
+| Mobile hero fold (375×812)               | ✅ H1 141px, CTA top 551px, no overflow at 320/430             |
+| Title brand-suffix audit                 | ✅ Exactly one brand mention per route                         |
+
+## Visual redesign (October 2026)
+
+A colourful, motion-led redesign requested by the business, built on GSAP
+(ScrollTrigger, SplitText), Lenis smooth scrolling, and seven vendored React Bits
+components. Copy is unchanged apart from component chrome; the company address was
+updated to **4676 Commercial Street SE, PMB #325, Salem, Oregon 97302** in the
+single source (`src/content/company.ts`). See `DESIGN_SYSTEM.md` for the system.
+
+**Validation**
+
+| Check                                                         | Result                                                                             |
+| ------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `npm run typecheck` / `npm run lint`                          | ✅ No errors or warnings                                                           |
+| `npm run test` (Vitest)                                       | ✅ 60 passed (address test now also rejects the superseded address)                |
+| `npm run build` and `npm run build:static`                    | ✅ Both succeed; static export includes `icon.svg`, `.htaccess`, payment endpoint  |
+| Playwright E2E + axe                                          | ✅ 96 passed, 2 skipped (desktop/mobile-only nav tests)                            |
+| axe — 11 pages × desktop/mobile × light, dark, reduced motion | ✅ 0 serious/critical violations                                                   |
+| Reduced motion                                                | ✅ Every `data-reveal` element fully visible at load with no scrolling             |
+| Static export under the production CSP (from `.htaccess`)     | ✅ No CSP violations or console errors; Lenis and GSAP active; WebGL fields render |
+| Horizontal overflow at 320 / 375 / 430 px (7 pages)           | ✅ None                                                                            |
+| Mobile hero fold (375×812)                                    | ✅ H1 143px tall, primary CTA bottom at 640px                                      |
+| Old address in built output                                   | ✅ Absent; new address present                                                     |
+
+**How the accessibility suite changed.** Pages are scrolled top to bottom before
+auditing, because scroll-driven effects (reveals, the scrubbed homepage statement)
+are only meant to be read once on screen. Two passes were added: dark theme, and
+reduced motion audited at load _without_ scrolling, so nothing can hide behind an
+animation. Defects the new suite caught and fixed: white numbers on light teal and
+orange tiles (deepened to clear 4.5:1), and a test bug — `reducedMotion` must be
+passed via `contextOptions`, otherwise Playwright silently ignores it.
+
+**Performance trade-off.** First-load JavaScript for the homepage rose from about
+107 kB to 176 kB (GSAP, ScrollTrigger, SplitText, Lenis, React Bits). The WebGL
+colour fields are loaded after hydration, capped at 1.5× device pixel ratio, and
+paused when offscreen or in a background tab.
+
+**Not verifiable in this environment:** the live domain (outbound requests to it
+are blocked here), real-device GPU performance, and Safari/Firefox rendering of
+the WebGL fields (Chromium only). The CSS gradient behind each field is what
+appears wherever WebGL2 is unavailable.

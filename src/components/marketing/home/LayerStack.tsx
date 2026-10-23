@@ -3,8 +3,11 @@
 import { useRef } from 'react';
 import { gsap, MOTION_OK, ScrollTrigger, useGSAP } from '@/lib/motion';
 
-/** One hue per layer, walking the brand spectrum from objective to growth. */
-const HUES = ['#2563EB', '#4F46E5', '#7C3AED', '#DB2777', '#0D9488', '#F97316'] as const;
+/**
+ * One hue per layer, walking the brand spectrum from objective to growth. Deep
+ * enough that the white step number on each tile clears 4.5:1.
+ */
+const HUES = ['#2563EB', '#4F46E5', '#7C3AED', '#BE185D', '#0F766E', '#C2410C'] as const;
 
 /**
  * The integrated layers as a numbered stack. As each layer crosses the middle of
