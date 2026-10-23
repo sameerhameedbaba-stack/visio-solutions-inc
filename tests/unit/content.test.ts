@@ -12,7 +12,10 @@ describe('official company information', () => {
     expect(company.name).toBe('Visio Solutions Inc.');
     expect(company.email).toBe('support@visiosolutions.net');
     expect(company.domain).toBe('visiosolutions.net');
-    expect(formattedAddress).toContain('4675 Commercial Street SE, PMB #470');
+    expect(formattedAddress).toContain('4676 Commercial Street SE, PMB #325');
+    // Guard against the superseded address creeping back in.
+    expect(formattedAddress).not.toContain('4675');
+    expect(formattedAddress).not.toContain('PMB #470');
     expect(formattedAddress).toContain('Salem, Oregon 97302');
   });
 

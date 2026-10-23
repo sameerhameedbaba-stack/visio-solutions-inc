@@ -13,7 +13,7 @@ export const company = {
   description:
     'Visio Solutions Inc. is an integrated technology partner that helps organizations build custom software, deploy practical AI and automation, strengthen digital operations with security-conscious engineering, and create measurable growth systems.',
   address: {
-    line1: '4675 Commercial Street SE, PMB #470',
+    line1: '4676 Commercial Street SE, PMB #325',
     city: 'Salem',
     stateShort: 'OR',
     state: 'Oregon',
