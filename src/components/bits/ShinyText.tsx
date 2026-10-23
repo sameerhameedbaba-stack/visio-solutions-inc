@@ -55,9 +55,9 @@ interface Settings {
 }
 
 const EASINGS: Record<Easing, (t: number) => number> = {
-  linear: t => t,
-  smooth: t => 0.5 - Math.cos(Math.PI * t) / 2,
-  snappy: t => (t < 0.5 ? 16 * Math.pow(t, 5) : 1 - Math.pow(-2 * t + 2, 5) / 2)
+  linear: (t) => t,
+  smooth: (t) => 0.5 - Math.cos(Math.PI * t) / 2,
+  snappy: (t) => (t < 0.5 ? 16 * Math.pow(t, 5) : 1 - Math.pow(-2 * t + 2, 5) / 2),
 };
 const TRIGGERS: Trigger[] = ['loop', 'hover', 'view'];
 const FALLOFF = [0, 0.2, 0.4, 0.6, 0.8, 1];
@@ -76,17 +76,25 @@ const parseColor = (value: string): Rgba | null => {
   paint.fillStyle = value;
   const resolved = String(paint.fillStyle);
   if (resolved.startsWith('#')) {
-    const [r, g, b] = [1, 3, 5].map(i => parseInt(resolved.slice(i, i + 2), 16));
+    const [r, g, b] = [1, 3, 5].map((i) => parseInt(resolved.slice(i, i + 2), 16));
     return [r ?? 0, g ?? 0, b ?? 0, 1];
   }
   const parts = resolved.match(/[\d.]+/g);
   if (!parts || parts.length < 3) return null;
-  return [Number(parts[0]), Number(parts[1]), Number(parts[2]), parts.length > 3 ? Number(parts[3]) : 1];
+  return [
+    Number(parts[0]),
+    Number(parts[1]),
+    Number(parts[2]),
+    parts.length > 3 ? Number(parts[3]) : 1,
+  ];
 };
 
 const blend = (from: Rgba, to: Rgba, amount: number) => {
   const channel = (a: number, b: number) =>
-    Math.round(Math.pow(Math.pow(a / 255, 2.2) * (1 - amount) + Math.pow(b / 255, 2.2) * amount, 1 / 2.2) * 255);
+    Math.round(
+      Math.pow(Math.pow(a / 255, 2.2) * (1 - amount) + Math.pow(b / 255, 2.2) * amount, 1 / 2.2) *
+        255,
+    );
   const alpha = from[3] * (1 - amount) + to[3] * amount;
   if (alpha <= 0) return 'rgba(0, 0, 0, 0)';
   const weigh = (a: number, b: number) => (a * from[3] * (1 - amount) + b * to[3] * amount) / alpha;
@@ -116,7 +124,7 @@ const ShinyText = ({
   pauseOnHover = false,
   disabled = false,
   className = '',
-  style
+  style,
 }: ShinyTextProps) => {
   const rootRef = useRef<HTMLSpanElement>(null);
   const glowRef = useRef<HTMLSpanElement>(null);
@@ -140,7 +148,7 @@ const ShinyText = ({
     yoyo,
     followPointer,
     pauseOnHover,
-    disabled
+    disabled,
   };
 
   useEffect(() => {
@@ -166,7 +174,7 @@ const ShinyText = ({
       target: 0,
       visible: true,
       seen: false,
-      colors: ''
+      colors: '',
     };
     let base: Rgba | null = null;
     let shine: Rgba | null = null;
@@ -265,7 +273,8 @@ const ShinyText = ({
       if (following) {
         if (state.pos === null) state.pos = nearest();
         const stiffness = 220;
-        state.vel += ((state.target - state.pos) * stiffness - state.vel * 2 * Math.sqrt(stiffness)) * dt;
+        state.vel +=
+          ((state.target - state.pos) * stiffness - state.vel * 2 * Math.sqrt(stiffness)) * dt;
         state.pos += state.vel * dt;
         state.phase = 'follow';
         draw();
@@ -329,7 +338,8 @@ const ShinyText = ({
       const dy = -Math.cos(radians);
       const length = Math.abs(rect.width * dx) + Math.abs(rect.height * dy) || 1;
       const along =
-        (event.clientX - rect.left - rect.width / 2) * dx + (event.clientY - rect.top - rect.height / 2) * dy;
+        (event.clientX - rect.left - rect.width / 2) * dx +
+        (event.clientY - rect.top - rect.height / 2) * dy;
       return 50 + (along / length) * 100;
     };
 
@@ -354,8 +364,8 @@ const ShinyText = ({
       wake();
     };
 
-    const observer = new IntersectionObserver(entries => {
-      const visible = entries.some(item => item.isIntersecting);
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.some((item) => item.isIntersecting);
       state.visible = visible;
       const s = settingsRef.current!;
       if (!visible) return;
@@ -401,14 +411,14 @@ const ShinyText = ({
   return (
     <span
       ref={rootRef}
-      className={`relative inline-block bg-no-repeat [background-size:100%_100%] bg-clip-text [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] ${className}`}
+      className={`relative inline-block bg-clip-text bg-no-repeat [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [background-size:100%_100%] ${className}`}
       style={{ backgroundImage: `linear-gradient(${color}, ${color})`, ...style }}
     >
       {content}
       {glow > 0 ? (
         <span
           ref={glowRef}
-          className="absolute inset-0 bg-no-repeat [background-size:100%_100%] bg-clip-text [-webkit-background-clip:text] [filter:blur(0.14em)] pointer-events-none select-none"
+          className="pointer-events-none absolute inset-0 select-none bg-clip-text bg-no-repeat [-webkit-background-clip:text] [background-size:100%_100%] [filter:blur(0.14em)]"
           aria-hidden="true"
         >
           {content}

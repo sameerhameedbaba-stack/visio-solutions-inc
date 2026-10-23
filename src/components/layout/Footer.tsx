@@ -37,7 +37,10 @@ export function Footer() {
             </p>
             <ul className="mt-6 flex flex-col gap-3 text-sm text-muted-foreground">
               <li className="flex items-start gap-2.5">
-                <Mail className="mt-0.5 h-4 w-4 flex-shrink-0 text-spectrum-cyan" aria-hidden="true" />
+                <Mail
+                  className="mt-0.5 h-4 w-4 flex-shrink-0 text-spectrum-cyan"
+                  aria-hidden="true"
+                />
                 <a
                   href={`mailto:${company.email}`}
                   className="inline-flex min-h-[24px] items-center transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spectrum-violet"
@@ -46,7 +49,10 @@ export function Footer() {
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
-                <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-spectrum-magenta" aria-hidden="true" />
+                <MapPin
+                  className="mt-0.5 h-4 w-4 flex-shrink-0 text-spectrum-magenta"
+                  aria-hidden="true"
+                />
                 <address className="not-italic">
                   {company.address.line1}
                   <br />

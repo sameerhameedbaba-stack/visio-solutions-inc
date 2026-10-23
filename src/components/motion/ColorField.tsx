@@ -15,7 +15,18 @@ import { cn } from '@/lib/utils';
  */
 const Grainient = dynamic(() => import('@/components/bits/Grainient'), { ssr: false });
 
-interface ColorFieldProps extends Pick<GrainientProps, 'angle' | 'bands' | 'speed' | 'flow' | 'scale' | 'interactive' | 'grainAmount' | 'saturation' | 'contrast'> {
+interface ColorFieldProps extends Pick<
+  GrainientProps,
+  | 'angle'
+  | 'bands'
+  | 'speed'
+  | 'flow'
+  | 'scale'
+  | 'interactive'
+  | 'grainAmount'
+  | 'saturation'
+  | 'contrast'
+> {
   colors: string[];
   className?: string;
   style?: CSSProperties;
@@ -29,12 +40,7 @@ export function ColorField({ colors, className, style, ...grainient }: ColorFiel
       style={{ backgroundImage: fallback, ...style }}
       aria-hidden="true"
     >
-      <Grainient
-        colors={colors}
-        clickSwirl={false}
-        dpr={1.5}
-        {...grainient}
-      />
+      <Grainient colors={colors} clickSwirl={false} dpr={1.5} {...grainient} />
     </div>
   );
 }

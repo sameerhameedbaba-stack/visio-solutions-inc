@@ -186,7 +186,10 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       </Section>
 
       {/* Scope & engagement (service-specific differentiation) */}
-      {(service.clientInputs || service.firstPhase || service.commonRisks || service.outOfScope) && (
+      {(service.clientInputs ||
+        service.firstPhase ||
+        service.commonRisks ||
+        service.outOfScope) && (
         <Section tone="subtle" ariaLabel="Scope and engagement">
           <Container>
             <SectionHeading

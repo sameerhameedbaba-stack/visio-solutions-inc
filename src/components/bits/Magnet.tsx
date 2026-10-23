@@ -73,7 +73,10 @@ let detach: (() => void) | null = null;
 const reach = (rect: DOMRect, pointer: Point) => {
   const dx = pointer.x - (rect.left + rect.width / 2);
   const dy = pointer.y - (rect.top + rect.height / 2);
-  const outside = Math.hypot(Math.max(0, Math.abs(dx) - rect.width / 2), Math.max(0, Math.abs(dy) - rect.height / 2));
+  const outside = Math.hypot(
+    Math.max(0, Math.abs(dx) - rect.width / 2),
+    Math.max(0, Math.abs(dy) - rect.height / 2),
+  );
   return { dx, dy, outside };
 };
 
@@ -160,7 +163,7 @@ const Magnet = ({
     stiffness: Math.max(1, spring?.stiffness ?? DEFAULT_SPRING.stiffness),
     damping: Math.max(0, spring?.damping ?? DEFAULT_SPRING.damping),
     mass: Math.max(0.01, spring?.mass ?? DEFAULT_SPRING.mass),
-    onActiveChange
+    onActiveChange,
   };
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
@@ -180,12 +183,13 @@ const Magnet = ({
     const solve = (target: Motion, dt: number) => {
       const s = settingsRef.current;
       let resting = true;
-      (Object.keys(current) as (keyof Motion)[]).forEach(key => {
+      (Object.keys(current) as (keyof Motion)[]).forEach((key) => {
         const force = s.stiffness * (target[key] - current[key]) - s.damping * velocity[key];
         velocity[key] += (force / s.mass) * dt;
         current[key] += velocity[key] * dt;
         const epsilon = key === 'scale' ? 0.001 : 0.05;
-        if (Math.abs(target[key] - current[key]) > epsilon || Math.abs(velocity[key]) > epsilon) resting = false;
+        if (Math.abs(target[key] - current[key]) > epsilon || Math.abs(velocity[key]) > epsilon)
+          resting = false;
       });
       return resting;
     };
@@ -222,7 +226,9 @@ const Magnet = ({
       const { x, y, tiltX, tiltY, scale } = current;
       const turned = Math.abs(tiltX) > 0.01 || Math.abs(tiltY) > 0.01;
       inner.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)${
-        turned ? ` perspective(800px) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg)` : ''
+        turned
+          ? ` perspective(800px) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg)`
+          : ''
       }${Math.abs(scale - 1) > 0.0005 ? ` scale(${scale.toFixed(4)})` : ''}`;
     };
 
@@ -242,7 +248,7 @@ const Magnet = ({
       let resting = true;
       for (let i = 0; i < steps; i++) resting = solve(target, dt / steps);
       if (resting) {
-        (Object.keys(current) as (keyof Motion)[]).forEach(key => {
+        (Object.keys(current) as (keyof Motion)[]).forEach((key) => {
           current[key] = target[key];
           velocity[key] = 0;
         });

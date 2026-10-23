@@ -82,7 +82,10 @@ export function DesktopNav({ tone = 'default' }: { tone?: 'default' | 'onDark' }
                 >
                   {item.label}
                   <ChevronDown
-                    className={cn('h-4 w-4 transition-transform duration-300', megaOpen && 'rotate-180')}
+                    className={cn(
+                      'h-4 w-4 transition-transform duration-300',
+                      megaOpen && 'rotate-180',
+                    )}
                     aria-hidden="true"
                   />
                 </button>
@@ -100,7 +103,10 @@ export function DesktopNav({ tone = 'default' }: { tone?: 'default' | 'onDark' }
                           const Icon = pillarIcons[column.pillarId];
                           const theme = pillarTheme[column.pillarId];
                           return (
-                            <div key={column.pillarId} className="rounded-card p-3 transition-colors hover:bg-surface-subtle">
+                            <div
+                              key={column.pillarId}
+                              className="rounded-card p-3 transition-colors hover:bg-surface-subtle"
+                            >
                               <div className="mb-3 flex items-center gap-2.5">
                                 <span
                                   className="inline-flex h-9 w-9 items-center justify-center rounded-xl text-white shadow-sm"
@@ -109,7 +115,9 @@ export function DesktopNav({ tone = 'default' }: { tone?: 'default' | 'onDark' }
                                 >
                                   <Icon className="h-[18px] w-[18px]" />
                                 </span>
-                                <p className={cn('text-sm font-bold', theme.text)}>{column.heading}</p>
+                                <p className={cn('text-sm font-bold', theme.text)}>
+                                  {column.heading}
+                                </p>
                               </div>
                               <ul className="flex flex-col gap-0.5">
                                 {column.links.map((link) => (

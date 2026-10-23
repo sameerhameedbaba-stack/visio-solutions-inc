@@ -26,7 +26,12 @@ export function RelatedServices({ slugs }: { slugs: string[] }) {
               />
               <h3 className="text-base font-bold text-foreground">{service.navLabel}</h3>
               <p className="mt-2 flex-1 text-sm text-muted-foreground">{service.summary}</p>
-              <span className={cn('mt-4 inline-flex items-center gap-1 text-sm font-semibold', theme.text)}>
+              <span
+                className={cn(
+                  'mt-4 inline-flex items-center gap-1 text-sm font-semibold',
+                  theme.text,
+                )}
+              >
                 Learn more
                 <ArrowRight
                   className="h-4 w-4 transition-transform group-hover:translate-x-1"

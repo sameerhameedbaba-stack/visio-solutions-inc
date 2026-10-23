@@ -24,7 +24,13 @@ interface HeroTitleProps {
  * never split. Before JavaScript runs the heading is plain, server-rendered text
  * (hidden only once JS is known to be available — see `data-reveal` in CSS).
  */
-export function HeroTitle({ text, highlight, as: Tag = 'h1', className, delay = 0.1 }: HeroTitleProps) {
+export function HeroTitle({
+  text,
+  highlight,
+  as: Tag = 'h1',
+  className,
+  delay = 0.1,
+}: HeroTitleProps) {
   const ref = useRef<HTMLHeadingElement | null>(null);
 
   useGSAP(

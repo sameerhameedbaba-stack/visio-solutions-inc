@@ -61,7 +61,7 @@ export default function GradientText({
   pauseOnHover = false,
   followPointer = false,
   className = '',
-  style
+  style,
 }: GradientTextProps) {
   const rootRef = useRef<HTMLSpanElement>(null);
   const settingsRef = useRef<Settings | null>(null);
@@ -76,7 +76,7 @@ export default function GradientText({
     scale: clamp(scale, 1, 6),
     yoyo,
     pauseOnHover,
-    followPointer
+    followPointer,
   };
 
   useEffect(() => {
@@ -88,7 +88,18 @@ export default function GradientText({
     if (!root) return undefined;
 
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
-    const state = { time: 0, inside: false, visible: true, x: 0.5, y: 0.5, px: 0.5, py: 0.5, vx: 0, vy: 0, pull: 0 };
+    const state = {
+      time: 0,
+      inside: false,
+      visible: true,
+      x: 0.5,
+      y: 0.5,
+      px: 0.5,
+      py: 0.5,
+      vx: 0,
+      vy: 0,
+      pull: 0,
+    };
     let raf = 0;
     let last = 0;
     let alive = true;
@@ -128,7 +139,9 @@ export default function GradientText({
           offset = (cycle % 1) * period;
         }
         offset += (state.px - 0.5) * period * 0.5 * state.pull;
-        const stops = loop.map((color, i) => `${color} ${((i / (loop.length - 1)) * period - offset).toFixed(2)}%`);
+        const stops = loop.map(
+          (color, i) => `${color} ${((i / (loop.length - 1)) * period - offset).toFixed(2)}%`,
+        );
         image = `repeating-linear-gradient(${s.angle}deg, ${stops.join(', ')})`;
       }
       root.style.setProperty('--gt-gradient', image);
@@ -150,7 +163,8 @@ export default function GradientText({
       state.px += state.vx * dt;
       state.py += state.vy * dt;
       paint();
-      const settling = Math.abs(state.pull - target) > 0.001 || Math.abs(state.vx) + Math.abs(state.vy) > 0.001;
+      const settling =
+        Math.abs(state.pull - target) > 0.001 || Math.abs(state.vx) + Math.abs(state.vy) > 0.001;
       if (!state.visible || (paused && !settling)) return;
       raf = requestAnimationFrame(tick);
     };
@@ -188,8 +202,8 @@ export default function GradientText({
       wake();
     };
 
-    const observer = new IntersectionObserver(entries => {
-      state.visible = entries.some(entry => entry.isIntersecting);
+    const observer = new IntersectionObserver((entries) => {
+      state.visible = entries.some((entry) => entry.isIntersecting);
       if (state.visible) wake();
     });
     observer.observe(root);
@@ -215,23 +229,23 @@ export default function GradientText({
   return (
     <span
       ref={rootRef}
-      className={`relative inline-flex items-center justify-center max-w-full isolate ${showBorder ? 'px-[0.75em] py-[0.35em] rounded-full before:content-[] before:absolute before:inset-0 before:p-[var(--gt-border)] before:rounded-[inherit] before:[background-image:var(--gt-gradient)] before:[-webkit-mask:linear-gradient(#000_0_0)_content-box,linear-gradient(#000_0_0)] before:[-webkit-mask-composite:xor] before:[mask:linear-gradient(#000_0_0)_content-box_exclude,linear-gradient(#000_0_0)] before:pointer-events-none' : ''}${className ? ` ${className}` : ''}`}
+      className={`relative isolate inline-flex max-w-full items-center justify-center ${showBorder ? 'rounded-full px-[0.75em] py-[0.35em] before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:p-[var(--gt-border)] before:content-[] before:[-webkit-mask-composite:xor] before:[-webkit-mask:linear-gradient(#000_0_0)_content-box,linear-gradient(#000_0_0)] before:[background-image:var(--gt-gradient)] before:[mask:linear-gradient(#000_0_0)_content-box_exclude,linear-gradient(#000_0_0)]' : ''}${className ? ` ${className}` : ''}`}
       style={
         {
           '--gt-gradient': `linear-gradient(${direction ? (ANGLES[direction] ?? angle) : angle}deg, ${loop.join(', ')})`,
           '--gt-border': `${borderWidth}px`,
           '--gt-glow': clamp(glow, 0, 1),
-          ...style
+          ...style,
         } as CSSProperties
       }
     >
       <span className="relative inline-block">
-        <span className="inline-block [background-image:var(--gt-gradient)] bg-clip-text [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
+        <span className="inline-block bg-clip-text [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [background-image:var(--gt-gradient)]">
           {children}
         </span>
         {glow > 0 ? (
           <span
-            className="absolute inset-0 -z-10 [background-image:var(--gt-gradient)] bg-clip-text [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [filter:blur(0.3em)_saturate(1.4)] opacity-[var(--gt-glow)] pointer-events-none select-none"
+            className="pointer-events-none absolute inset-0 -z-10 select-none bg-clip-text opacity-[var(--gt-glow)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [background-image:var(--gt-gradient)] [filter:blur(0.3em)_saturate(1.4)]"
             aria-hidden="true"
           >
             {children}

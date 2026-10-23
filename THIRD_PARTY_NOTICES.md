@@ -7,7 +7,8 @@ Components in `src/components/bits/` are adapted from
 Grainient, SpotlightCard, Magnet, ShinyText, GradientText, LogoLoop and ScrollReveal.
 
 Changes made here: typing adjusted for this project's `noUncheckedIndexedAccess`
-setting; no behavioural changes unless noted in a file's header.
+setting; ScrollReveal also gained an `as` prop (noted in its header). No other
+behavioural changes.
 
 ```
 MIT + Commons Clause License Condition v1.0

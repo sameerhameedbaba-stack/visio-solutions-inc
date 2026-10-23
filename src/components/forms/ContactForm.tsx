@@ -250,8 +250,8 @@ export function ContactForm() {
         >
           <p className="text-sm font-semibold text-foreground">One quick step to send</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            Your details are ready. Click below to open your email app with everything filled in, then
-            hit send — it goes straight to our team.
+            Your details are ready. Click below to open your email app with everything filled in,
+            then hit send — it goes straight to our team.
           </p>
           <a
             href={mailtoHref}

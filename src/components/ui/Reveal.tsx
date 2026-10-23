@@ -24,7 +24,13 @@ interface RevealProps {
  * accessibility tree and screen-reader users can reach it before it is scrolled
  * into view. Under prefers-reduced-motion nothing moves.
  */
-export function Reveal({ children, className, delay = 0, as: Tag = 'div', distance = 28 }: RevealProps) {
+export function Reveal({
+  children,
+  className,
+  delay = 0,
+  as: Tag = 'div',
+  distance = 28,
+}: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
 
   useGSAP(

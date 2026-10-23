@@ -3,6 +3,10 @@
  * Copyright (c) 2026 David Haz. MIT + Commons Clause License Condition v1.0:
  * may be used in this website; the component itself may not be sold, sublicensed
  * or redistributed on its own. See THIRD_PARTY_NOTICES.md.
+ *
+ * Local change: an `as` prop. Headings keep the original aria-label approach;
+ * a paragraph cannot carry an accessible name, so its words are left exposed
+ * (they are inline spans with the original spacing, so they read naturally).
  */
 'use client';
 
@@ -14,7 +18,7 @@ import React, {
   useRef,
   useState,
   type ReactNode,
-  type RefObject
+  type RefObject,
 } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -32,6 +36,7 @@ type RevealMode = 'scrub' | 'enter';
 
 interface ScrollRevealProps {
   children: ReactNode;
+  as?: 'h2' | 'h3' | 'p';
   scrollContainerRef?: RefObject<HTMLElement | null>;
   enableBlur?: boolean;
   baseOpacity?: number;
@@ -70,7 +75,8 @@ const easeBack = (value: number, overshoot: number) => {
   const shifted = value - 1;
   return 1 + (overshoot + 1) * shifted * shifted * shifted + overshoot * shifted * shifted;
 };
-const glowAt = (t: number) => (t <= 0 || t >= 1 ? 0 : t < 0.35 ? smooth(t / 0.35) : 1 - smooth((t - 0.35) / 0.65));
+const glowAt = (t: number) =>
+  t <= 0 || t >= 1 ? 0 : t < 0.35 ? smooth(t / 0.35) : 1 - smooth((t - 0.35) / 0.65);
 
 const paintPiece = (piece: HTMLElement, t: number, look: RevealLook) => {
   let reveal = t;
@@ -96,18 +102,25 @@ const paintPiece = (piece: HTMLElement, t: number, look: RevealLook) => {
   if (look.highlightColor) fadeIn = Math.max(fadeIn, clamp01(t / 0.35));
   const settle = clamp01(reveal);
   const lift = look.offset * (1 - settle);
-  piece.style.opacity = t >= 1 ? '' : (look.baseOpacity + (1 - look.baseOpacity) * fadeIn).toFixed(3);
-  piece.style.transform = [lift ? `translateY(${lift.toFixed(2)}px)` : '', motion].filter(Boolean).join(' ');
-  piece.style.filter = look.blur && settle < 1 ? `blur(${(look.blur * (1 - settle)).toFixed(2)}px)` : '';
+  piece.style.opacity =
+    t >= 1 ? '' : (look.baseOpacity + (1 - look.baseOpacity) * fadeIn).toFixed(3);
+  piece.style.transform = [lift ? `translateY(${lift.toFixed(2)}px)` : '', motion]
+    .filter(Boolean)
+    .join(' ');
+  piece.style.filter =
+    look.blur && settle < 1 ? `blur(${(look.blur * (1 - settle)).toFixed(2)}px)` : '';
   if (look.highlightColor) {
     const glow = glowAt(t);
     piece.style.color =
-      glow > 0.002 ? `color-mix(in srgb, ${look.highlightColor} ${(glow * 100).toFixed(1)}%, currentColor)` : '';
+      glow > 0.002
+        ? `color-mix(in srgb, ${look.highlightColor} ${(glow * 100).toFixed(1)}%, currentColor)`
+        : '';
   }
 };
 
 const ScrollReveal: React.FC<ScrollRevealProps> = ({
   children,
+  as: Tag = 'h2',
   scrollContainerRef,
   enableBlur = true,
   baseOpacity = 0.1,
@@ -124,14 +137,16 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
   containerClassName = '',
   textClassName = '',
   rotationEnd = 'bottom bottom',
-  wordAnimationEnd = 'bottom bottom'
+  wordAnimationEnd = 'bottom bottom',
 }) => {
   const containerRef = useRef<HTMLHeadingElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
 
   const text = useMemo(() => {
     const parts = Children.toArray(children);
-    return parts.every(part => typeof part === 'string' || typeof part === 'number') ? parts.join('') : null;
+    return parts.every((part) => typeof part === 'string' || typeof part === 'number')
+      ? parts.join('')
+      : null;
   }, [children]);
 
   const splitText = useMemo(() => {
@@ -153,7 +168,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
             </span>
           )}
         </span>
-      )
+      ),
     );
   }, [text, splitBy]);
 
@@ -169,8 +184,11 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
 
     const scroller = scrollContainerRef?.current || window;
     const wrappers = Array.from(el.querySelectorAll<HTMLElement>('[data-word]'));
-    const pieces = wrappers.length ? Array.from(el.querySelectorAll<HTMLElement>('[data-piece]')) : [textEl];
-    const viewportHeight = () => (scroller instanceof HTMLElement ? scroller.clientHeight : window.innerHeight);
+    const pieces = wrappers.length
+      ? Array.from(el.querySelectorAll<HTMLElement>('[data-piece]'))
+      : [textEl];
+    const viewportHeight = () =>
+      scroller instanceof HTMLElement ? scroller.clientHeight : window.innerHeight;
     const scrub = smoothing > 0 ? smoothing : true;
     const span = mode === 'enter' ? Math.max(0.05, duration) : SCRUB_SPAN;
     const gap = Math.max(0, stagger);
@@ -180,7 +198,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
       baseOpacity,
       blur: enableBlur ? blurStrength : 0,
       offset: baseOffset,
-      highlightColor
+      highlightColor,
     };
     const mm = gsap.matchMedia();
 
@@ -218,13 +236,17 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
       };
 
       measure();
-      pieces.forEach(piece => {
+      pieces.forEach((piece) => {
         piece.style.willChange =
-          pieces.length > 80 ? '' : effect === 'fade' && !baseOffset ? 'opacity' : 'opacity, transform';
+          pieces.length > 80
+            ? ''
+            : effect === 'fade' && !baseOffset
+              ? 'opacity'
+              : 'opacity, transform';
         piece.style.transformOrigin = effect === 'flip' ? '50% 100%' : '';
       });
       if (look.masked) {
-        wrappers.forEach(wrapper => {
+        wrappers.forEach((wrapper) => {
           wrapper.style.clipPath = RISE_MASK;
         });
       }
@@ -236,7 +258,8 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
           if (played) return;
           played = true;
           gsap.to(state, { p: 1, duration: total(), ease: 'none', onUpdate: render });
-          if (baseRotation) gsap.to(el, { rotate: 0, duration: Math.min(total(), 1.4), ease: 'power3.out' });
+          if (baseRotation)
+            gsap.to(el, { rotate: 0, duration: Math.min(total(), 1.4), ease: 'power3.out' });
         };
         const startAt = () => {
           const view = viewportHeight();
@@ -257,7 +280,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
           onLeave: play,
           onRefresh: (self: ScrollTrigger) => {
             if (self.progress > 0) play();
-          }
+          },
         });
       } else {
         if (baseRotation) {
@@ -272,9 +295,9 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
                 scroller,
                 start: 'top bottom',
                 end: clampToScroll(rotationEnd),
-                scrub
-              }
-            }
+                scrub,
+              },
+            },
           );
         }
         gsap.to(state, {
@@ -286,8 +309,8 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
             scroller,
             start: () => `top bottom-=${0.2 * Math.min(el.offsetHeight, viewportHeight())}`,
             end: clampToScroll(wordAnimationEnd),
-            scrub
-          }
+            scrub,
+          },
         });
       }
 
@@ -303,7 +326,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
 
       return () => {
         resizeObserver?.disconnect();
-        pieces.forEach(piece => {
+        pieces.forEach((piece) => {
           piece.style.opacity = '';
           piece.style.transform = '';
           piece.style.transformOrigin = '';
@@ -311,7 +334,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
           piece.style.color = '';
           piece.style.willChange = '';
         });
-        wrappers.forEach(wrapper => {
+        wrappers.forEach((wrapper) => {
           wrapper.style.clipPath = '';
         });
       };
@@ -335,19 +358,23 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
     stagger,
     smoothing,
     rotationEnd,
-    wordAnimationEnd
+    wordAnimationEnd,
   ]);
 
   return (
-    <h2 ref={containerRef} className={`my-5 ${containerClassName}`} aria-label={text ?? undefined}>
+    <Tag
+      ref={containerRef as never}
+      className={`my-5 ${containerClassName}`}
+      aria-label={Tag === 'p' ? undefined : (text ?? undefined)}
+    >
       <span
         ref={textRef}
-        className={`block text-[clamp(1.6rem,4vw,3rem)] leading-[1.5] font-semibold ${textClassName}`}
-        aria-hidden={text === null ? undefined : true}
+        className={`block text-[clamp(1.6rem,4vw,3rem)] font-semibold leading-[1.5] ${textClassName}`}
+        aria-hidden={Tag === 'p' || text === null ? undefined : true}
       >
         {splitText ?? children}
       </span>
-    </h2>
+    </Tag>
   );
 };
 

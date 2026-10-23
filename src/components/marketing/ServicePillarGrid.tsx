@@ -57,7 +57,10 @@ export function ServicePillarGrid() {
                     {pillar.description}
                   </p>
                   {pillarServices.length > 0 && (
-                    <ul className="relative mt-6 flex flex-wrap gap-2" aria-label={`${pillar.name} services`}>
+                    <ul
+                      className="relative mt-6 flex flex-wrap gap-2"
+                      aria-label={`${pillar.name} services`}
+                    >
                       {pillarServices.map((service) => (
                         <li
                           key={service.slug}

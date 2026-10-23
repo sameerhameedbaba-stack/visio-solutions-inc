@@ -90,7 +90,7 @@ const config: Config = {
       },
       fontSize: {
         // Mobile minimums stay modest so long headlines do not dominate a phone screen.
-        display: ['clamp(2.15rem, 5.6vw, 5.25rem)', { lineHeight: '1.04', letterSpacing: '-0.035em' }],
+        display: ['clamp(2.15rem, 5vw, 4.6rem)', { lineHeight: '1.04', letterSpacing: '-0.035em' }],
         h1: ['clamp(2.05rem, 4.2vw, 3.75rem)', { lineHeight: '1.08', letterSpacing: '-0.03em' }],
         h2: ['clamp(1.85rem, 3.2vw, 3rem)', { lineHeight: '1.12', letterSpacing: '-0.025em' }],
         h3: ['clamp(1.4rem, 2vw, 2rem)', { lineHeight: '1.18', letterSpacing: '-0.01em' }],
@@ -129,7 +129,8 @@ const config: Config = {
         float: '0 8px 40px -8px rgb(16 24 40 / 0.24)',
         focus: '0 0 0 3px rgb(37 99 235 / 0.35)',
         glow: '0 10px 40px -10px rgb(124 58 237 / 0.55), 0 4px 18px -6px rgb(37 99 235 / 0.45)',
-        'glow-lg': '0 30px 80px -20px rgb(124 58 237 / 0.45), 0 12px 40px -12px rgb(219 39 119 / 0.35)',
+        'glow-lg':
+          '0 30px 80px -20px rgb(124 58 237 / 0.45), 0 12px 40px -12px rgb(219 39 119 / 0.35)',
         lift: '0 1px 2px rgb(11 16 36 / 0.04), 0 22px 48px -24px rgb(11 16 36 / 0.22)',
       },
       transitionTimingFunction: {
@@ -147,10 +148,25 @@ const config: Config = {
         'dash-flow': {
           to: { strokeDashoffset: '-16' },
         },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-8px)' },
+        },
+        'orbit-spin': {
+          to: { transform: 'rotate(360deg)' },
+        },
+        'glow-pulse': {
+          '0%, 100%': { opacity: '0.55', transform: 'scale(1)' },
+          '50%': { opacity: '0.9', transform: 'scale(1.06)' },
+        },
       },
       animation: {
         'fade-up': 'fade-up 0.5s var(--ease-natural, ease-out) both',
         'fade-in': 'fade-in 0.4s ease-out both',
+        float: 'float 6s ease-in-out infinite',
+        'orbit-slow': 'orbit-spin 70s linear infinite',
+        'orbit-reverse': 'orbit-spin 50s linear infinite reverse',
+        'glow-pulse': 'glow-pulse 5s ease-in-out infinite',
       },
     },
   },

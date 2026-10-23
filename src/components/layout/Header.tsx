@@ -61,8 +61,11 @@ export function Header() {
         className={cn(
           'pointer-events-auto mx-auto flex max-w-wide items-center justify-between gap-4 rounded-full pl-5 pr-2.5 ring-1 backdrop-blur-xl backdrop-saturate-150 transition-[height,box-shadow,background-color] duration-500 ease-natural',
           onInk
-            ? 'bg-ink/45 ring-white/15 shadow-[0_8px_32px_-12px_rgba(0,0,0,0.5)]'
-            : cn('bg-surface/75', scrolled ? 'shadow-lift ring-border' : 'shadow-sm ring-border/60'),
+            ? 'bg-ink/45 shadow-[0_8px_32px_-12px_rgba(0,0,0,0.5)] ring-white/15'
+            : cn(
+                'bg-surface/75',
+                scrolled ? 'shadow-lift ring-border' : 'shadow-sm ring-border/60',
+              ),
           scrolled ? 'h-14' : 'h-16',
         )}
       >

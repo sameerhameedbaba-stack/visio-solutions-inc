@@ -35,7 +35,14 @@ export function Logo({
       >
         <svg width="34" height="34" viewBox="0 0 32 32" fill="none" role="presentation">
           <defs>
-            <linearGradient id={gradientId} x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+            <linearGradient
+              id={gradientId}
+              x1="0"
+              y1="0"
+              x2="32"
+              y2="32"
+              gradientUnits="userSpaceOnUse"
+            >
               <stop offset="0" stopColor="#2563EB" />
               <stop offset="0.5" stopColor="#7C3AED" />
               <stop offset="1" stopColor="#DB2777" />
@@ -60,7 +67,11 @@ export function Logo({
           tone === 'onDark' ? 'text-white' : 'text-foreground',
         )}
       >
-        Visio<span className={tone === 'onDark' ? 'text-white/70' : 'text-subtle-foreground'}> Solutions</span>
+        Visio
+        <span className={tone === 'onDark' ? 'text-white/70' : 'text-subtle-foreground'}>
+          {' '}
+          Solutions
+        </span>
       </span>
     </Link>
   );

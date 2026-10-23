@@ -29,7 +29,9 @@ export function IndustryGrid() {
                 aria-hidden="true"
               />
               <h3 className="mt-4 text-lg font-bold text-foreground">{industry.name}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{industry.summary}</p>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                {industry.summary}
+              </p>
             </div>
           </Reveal>
         );

@@ -276,7 +276,11 @@
     -webkit-text-fill-color: transparent;
   }
 
+  /* Gradient-clipped text (ours and the React Bits text effects) falls back to
+     the system text colour in Windows high-contrast mode. */
   @media (forced-colors: active) {
+    [class*='bg-clip-text'],
+    [class*='bg-clip-text'] *,
     .text-spectrum,
     .text-spectrum * {
       color: CanvasText;

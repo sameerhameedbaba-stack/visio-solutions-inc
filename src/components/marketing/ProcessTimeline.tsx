@@ -37,13 +37,17 @@ export function ProcessTimeline({
         list.querySelectorAll<HTMLElement>('[data-step-marker]').forEach((marker) => {
           gsap.fromTo(
             marker,
-            { scale: 0.7, filter: 'saturate(0) brightness(1.4)' },
+            { scale: 0.7, opacity: 0.35 },
             {
               scale: 1,
-              filter: 'saturate(1) brightness(1)',
+              opacity: 1,
               ease: 'back.out(2)',
               duration: 0.5,
-              scrollTrigger: { trigger: marker, start: 'top 72%', toggleActions: 'play none none reverse' },
+              scrollTrigger: {
+                trigger: marker,
+                start: 'top 72%',
+                toggleActions: 'play none none reverse',
+              },
             },
           );
         });
@@ -60,7 +64,10 @@ export function ProcessTimeline({
         className="absolute bottom-6 left-[1.45rem] top-6 w-0.5 overflow-hidden rounded-full bg-border sm:left-[1.7rem]"
         aria-hidden="true"
       >
-        <span data-rail-fill="" className="block h-full w-full origin-top bg-[linear-gradient(180deg,#2563EB,#7C3AED,#DB2777,#F97316)]" />
+        <span
+          data-rail-fill=""
+          className="block h-full w-full origin-top bg-[linear-gradient(180deg,#2563EB,#7C3AED,#DB2777,#F97316)]"
+        />
       </span>
       {steps.map((step, index) => (
         <Reveal as="li" key={step.title} delay={40}>
