@@ -1,6 +1,9 @@
 User-Agent: *
 Allow: /
 Disallow: /thank-you
+Disallow: /payment/success
+Disallow: /payment/cancel
+Disallow: /payment/notify.php
 Disallow: /api/
 
 Host: https://visiosolutions.net
