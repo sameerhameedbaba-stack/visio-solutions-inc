@@ -1,80 +1,70 @@
 /*
- * Styles for the /summary presentation deck that Tailwind utilities cannot
- * express cleanly: the shifting background glow, the looping illustration
- * animations, and the no-flash entrance gating. Loaded only on /summary.
+ * Styles for the /summary deck (bright theme) that Tailwind utilities cannot
+ * express cleanly: the soft background tint, short illustration animations and
+ * the no-flash entrance gating.
+ *
+ * Motion rule: nothing moves on its own for more than about 5 seconds (WCAG
+ * 2.2.2), every loop has a fixed number of runs, and reduced motion stops all
+ * of it.
  */
 
 /* ---- Background ------------------------------------------------------- */
 
 .deck {
-  /* Glow colours; the deck tweens these per slide. */
+  /* Tint colours; the deck tweens these per slide. */
   --a1: #2563eb;
   --a2: #7c3aed;
   --a3: #db2777;
+  background-color: #f7f9fc;
 }
 
 .glow {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(70px);
-  opacity: 0.5;
+  filter: blur(80px);
+  opacity: 0.16;
   pointer-events: none;
-  animation: drift 24s ease-in-out infinite alternate;
 }
 .glowA {
-  width: 46vmax;
-  height: 46vmax;
-  left: -12vmax;
-  top: -16vmax;
+  width: 44vmax;
+  height: 44vmax;
+  left: -14vmax;
+  top: -18vmax;
   background: radial-gradient(closest-side, var(--a1), transparent);
 }
 .glowB {
   width: 40vmax;
   height: 40vmax;
-  right: -12vmax;
-  top: 8vh;
+  right: -14vmax;
+  top: 6vh;
   background: radial-gradient(closest-side, var(--a2), transparent);
-  animation-duration: 30s;
-  animation-direction: alternate-reverse;
 }
 .glowC {
-  width: 38vmax;
-  height: 38vmax;
-  left: 28vw;
+  width: 36vmax;
+  height: 36vmax;
+  left: 30vw;
   bottom: -26vmax;
   background: radial-gradient(closest-side, var(--a3), transparent);
-  opacity: 0.38;
-  animation-duration: 34s;
+  opacity: 0.12;
 }
 
-/* Faint technical grid, faded out toward the edges. */
+/* Faint dot grid, faded toward the edges. */
 .grid {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image:
-    linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
-  background-size: 56px 56px;
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 30%, transparent 100%);
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 30%, transparent 100%);
-}
-
-@keyframes drift {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  100% {
-    transform: translate3d(6vw, 4vh, 0) scale(1.12);
-  }
+  background-image: radial-gradient(rgb(15 23 42 / 0.09) 1.2px, transparent 1.2px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 100%);
 }
 
 /* ---- Entrance gating -------------------------------------------------- */
 
 /*
  * Slide elements marked data-a animate in. They are hidden up front only while
- * JavaScript is running and before the deck has taken over, so there is no
- * visible-then-hidden flash; if the script never starts they appear anyway.
+ * JavaScript is running and before the deck has taken over (data-ready), so
+ * there is no flash; if the script never starts they appear anyway.
  */
 :global(.js) .deck:not([data-ready]) [data-a] {
   opacity: 0;
@@ -86,25 +76,11 @@
   }
 }
 
-/* ---- Looping illustration motion -------------------------------------- */
+/* ---- Short illustration motion (each ends within ~5s) ----------------- */
 
-.spin {
-  animation: spin 60s linear infinite;
-}
-.spinReverse {
-  animation: spin 44s linear infinite reverse;
-}
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
+/* A gentle bob, two times, then still. */
 .float {
-  animation: float 6s ease-in-out infinite;
-}
-.floatSlow {
-  animation: float 8s ease-in-out 1s infinite;
+  animation: float 2.4s ease-in-out 0.6s 2;
 }
 @keyframes float {
   0%,
@@ -112,17 +88,18 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-8px);
   }
 }
 
+/* Halo behind the shield breathes twice. */
 .pulse {
-  animation: pulse 3.2s ease-in-out infinite;
+  animation: pulse 2.2s ease-in-out 0.4s 2;
 }
 @keyframes pulse {
   0%,
   100% {
-    opacity: 0.55;
+    opacity: 0.6;
     transform: scale(1);
   }
   50% {
@@ -131,10 +108,10 @@
   }
 }
 
-/* Dashed connector lines that flow away from the centre. */
+/* Dashed connector lines that flow outward, three times. */
 .flow {
   stroke-dasharray: 5 6;
-  animation: flow 1.6s linear infinite;
+  animation: flow 1.5s linear 3;
 }
 @keyframes flow {
   to {
@@ -142,23 +119,31 @@
   }
 }
 
+/* Attention blink, four times. */
 .blink {
-  animation: blink 1.4s ease-in-out infinite;
+  animation: blink 1.1s ease-in-out 4;
 }
 @keyframes blink {
   50% {
-    opacity: 0.25;
+    opacity: 0.3;
   }
 }
 
 /*
- * Slide 6: the screen loops infected → cleaned → protected, and the matching
- * state pill lights up with it. One 9s cycle, three equal phases.
+ * Slide 6: the screen goes infected → cleaned → protected once (about 4.8s) and
+ * stays on protected. The matching stage pill is ringed while it is current.
  */
 .phase1,
 .phase2,
-.phase3 {
-  animation: 9s linear infinite;
+.phase3,
+.pill1,
+.pill2,
+.pill3 {
+  animation-duration: 4.8s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+  animation-delay: 0.6s;
 }
 .phase1 {
   animation-name: phase1;
@@ -174,12 +159,9 @@
   30% {
     opacity: 1;
   }
-  33.3%,
-  97% {
-    opacity: 0;
-  }
+  34%,
   100% {
-    opacity: 1;
+    opacity: 0;
   }
 }
 @keyframes phase2 {
@@ -187,35 +169,26 @@
   30% {
     opacity: 0;
   }
-  33.3%,
-  63.3% {
+  34%,
+  63% {
     opacity: 1;
   }
-  66.6%,
+  67%,
   100% {
     opacity: 0;
   }
 }
 @keyframes phase3 {
   0%,
-  63.3% {
+  63% {
     opacity: 0;
   }
-  66.6%,
-  97% {
-    opacity: 1;
-  }
+  67%,
   100% {
-    opacity: 0;
+    opacity: 1;
   }
 }
 
-/* Pills: dim by default, lit during their phase. */
-.pill1,
-.pill2,
-.pill3 {
-  animation: 9s linear infinite;
-}
 .pill1 {
   animation-name: pill1;
 }
@@ -228,56 +201,48 @@
 @keyframes pill1 {
   0%,
   30% {
-    opacity: 1;
-    transform: scale(1.06);
+    transform: scale(1.08);
+    box-shadow: 0 0 0 3px rgb(220 38 38 / 0.35);
   }
-  33.3%,
-  97% {
-    opacity: 0.45;
-    transform: scale(1);
-  }
+  34%,
   100% {
-    opacity: 1;
-    transform: scale(1.06);
+    transform: scale(1);
+    box-shadow: 0 0 0 0 transparent;
   }
 }
 @keyframes pill2 {
   0%,
   30% {
-    opacity: 0.45;
     transform: scale(1);
+    box-shadow: 0 0 0 0 transparent;
   }
-  33.3%,
-  63.3% {
-    opacity: 1;
-    transform: scale(1.06);
+  34%,
+  63% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 3px rgb(37 99 235 / 0.35);
   }
-  66.6%,
+  67%,
   100% {
-    opacity: 0.45;
     transform: scale(1);
+    box-shadow: 0 0 0 0 transparent;
   }
 }
 @keyframes pill3 {
   0%,
-  63.3% {
-    opacity: 0.45;
+  63% {
     transform: scale(1);
+    box-shadow: 0 0 0 0 transparent;
   }
-  66.6%,
-  97% {
-    opacity: 1;
-    transform: scale(1.06);
-  }
+  67%,
   100% {
-    opacity: 0.45;
-    transform: scale(1);
+    transform: scale(1.08);
+    box-shadow: 0 0 0 3px rgb(5 150 105 / 0.4);
   }
 }
 
 /* Scan line sweeping down the screen during the "cleaned" phase. */
 .scan {
-  animation: scan 1.5s ease-in-out infinite;
+  animation: scan 0.75s ease-in-out 2.2s 2;
 }
 @keyframes scan {
   0% {
@@ -289,22 +254,16 @@
 }
 
 /*
- * Reduced motion: nothing loops, nothing drifts. Slide 6 rests on its final,
- * protected state with every pill fully visible.
+ * Reduced motion: nothing moves. Slide 6 rests on its final, protected state.
  */
 @media (prefers-reduced-motion: reduce) {
-  .glow,
-  .spin,
-  .spinReverse,
   .float,
-  .floatSlow,
   .pulse,
   .flow,
   .blink,
   .scan,
   .pill1,
-  .pill2,
-  .pill3 {
+  .pill2 {
     animation: none !important;
   }
   .phase1,
@@ -315,6 +274,10 @@
   .phase3 {
     animation: none !important;
     opacity: 1;
+  }
+  .pill3 {
+    animation: none !important;
+    box-shadow: 0 0 0 3px rgb(5 150 105 / 0.4);
   }
   :global(.js) .deck:not([data-ready]) [data-a] {
     opacity: 1;

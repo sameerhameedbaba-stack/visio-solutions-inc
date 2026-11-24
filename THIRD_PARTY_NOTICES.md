@@ -52,3 +52,13 @@ ScrollTrigger and SplitText plugins, is used under GreenSock's standard
 
 [Lenis](https://github.com/darkroomengineering/lenis) is used under the MIT
 license. Copyright (c) 2024 darkroom.engineering.
+
+## /summary presentation deck
+
+- **Microsoft Fluent Emoji** (3D pictures) — MIT License, Copyright (c) Microsoft
+  Corporation. https://github.com/microsoft/fluentui-emoji. The images used are
+  in `scripts/summary/emoji/` and ship with the deck in `summary/img/` together
+  with the licence (`LICENSE-fluent-emoji.txt`).
+- **Inter** and **Plus Jakarta Sans** via Fontsource (`@fontsource-variable/*`)
+  — SIL Open Font License 1.1. Embedded in `summary/deck.css` so the deck works
+  offline.

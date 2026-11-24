@@ -7,6 +7,7 @@
  *     deck.css     all styles, with the two fonts embedded
  *     deck.js      the deck (React + GSAP), one plain script
  *     favicon.svg
+ *     img/         3D pictures (Microsoft Fluent Emoji, MIT) + their licence
  *
  * Every reference is relative and nothing is loaded from outside the folder, so
  * the deck works on the website (visiosolutions.net/summary/), uploaded on its
@@ -112,7 +113,7 @@ async function main() {
   ].join('\n');
   const standalone = `
 :root{--font-inter:'Inter Variable';--font-display:'Plus Jakarta Sans Variable';}
-html,body{background:#060816;}
+html,body{background:#f7f9fc;}
 body{margin:0;font-family:var(--font-inter),system-ui,-apple-system,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
 .noscript{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:2rem;color:#fff;text-align:center;}
 `;
@@ -127,11 +128,21 @@ body{margin:0;font-family:var(--font-inter),system-ui,-apple-system,'Segoe UI',s
     .code;
   writeFileSync(join(outDir, 'deck.css'), css, 'utf8');
 
+  const js = readFileSync(join(outDir, 'deck.js'), 'utf8');
+
   // 3. Favicon.
   copyFileSync(join(root, 'src', 'app', 'icon.svg'), join(outDir, 'favicon.svg'));
 
+  // 3b. Pictures: Microsoft Fluent Emoji 3D (MIT), shipped with their licence.
+  const emojiSrc = join(root, 'scripts', 'summary', 'emoji');
+  const imgDir = join(outDir, 'img');
+  mkdirSync(imgDir);
+  for (const name of readdirSync(emojiSrc)) {
+    const target = name === 'LICENSE.txt' ? 'LICENSE-fluent-emoji.txt' : name;
+    copyFileSync(join(emojiSrc, name), join(imgDir, target));
+  }
+
   // 4. Page. Relative links only; ?v= busts caches whenever a file changes.
-  const js = readFileSync(join(outDir, 'deck.js'), 'utf8');
   const title = `${deckBrand.full} — ${deckTitle}`;
   const html = `<!doctype html>
 <html lang="en">
@@ -141,7 +152,7 @@ body{margin:0;font-family:var(--font-inter),system-ui,-apple-system,'Segoe UI',s
 <title>${escapeHtml(title)}</title>
 <meta name="description" content="${escapeHtml(deckDescription)}" />
 <meta name="robots" content="noindex, nofollow" />
-<meta name="theme-color" content="#060816" />
+<meta name="theme-color" content="#f7f9fc" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="deck.css?v=${hash(css)}" />
 <script>document.documentElement.classList.add('js')</script>
@@ -157,7 +168,7 @@ body{margin:0;font-family:var(--font-inter),system-ui,-apple-system,'Segoe UI',s
 
   // 5. Guard: the folder must not depend on anything outside itself.
   const files = readdirSync(outDir).sort();
-  const expected = ['deck.css', 'deck.js', 'favicon.svg', 'index.html'];
+  const expected = ['deck.css', 'deck.js', 'favicon.svg', 'img', 'index.html'];
   if (JSON.stringify(files) !== JSON.stringify(expected)) {
     throw new Error(`Unexpected files in public/summary: ${files.join(', ')}`);
   }

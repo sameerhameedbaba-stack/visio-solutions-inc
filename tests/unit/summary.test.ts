@@ -3,13 +3,18 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { deckBrand, deckSlides, slideIndexFromHash } from '@/content/summary';
 import sitemap from '@/app/sitemap';
+import { emojiNames } from '@/components/summary/parts';
 
 const root = join(__dirname, '..', '..');
 
 /** Every source file that makes up the /summary deck. */
 function deckSources(): { file: string; text: string }[] {
   const dirs = [join(root, 'src', 'components', 'summary'), join(root, 'scripts', 'summary')];
-  const files = dirs.flatMap((dir) => readdirSync(dir).map((name) => join(dir, name)));
+  const files = dirs.flatMap((dir) =>
+    readdirSync(dir, { withFileTypes: true })
+      .filter((entry) => entry.isFile())
+      .map((entry) => join(dir, entry.name)),
+  );
   files.push(join(root, 'src', 'content', 'summary.ts'));
   return files.map((file) => ({ file, text: readFileSync(file, 'utf8') }));
 }
@@ -66,5 +71,21 @@ describe('summary deck placement', () => {
     expect(readFileSync(join(root, 'scripts', 'build-static.mjs'), 'utf8')).toContain(
       'scripts/build-summary.mjs',
     );
+  });
+});
+
+describe('summary deck pictures', () => {
+  it('ships a picture for every name the slides can ask for, and nothing unused', () => {
+    const dir = join(root, 'scripts', 'summary', 'emoji');
+    const files = readdirSync(dir).filter((name) => name.endsWith('.png'));
+    expect(files.sort()).toEqual(emojiNames.map((name) => `${name}.png`).sort());
+    expect(readdirSync(dir)).toContain('LICENSE.txt');
+  });
+
+  it('uses every listed picture somewhere in the slides', () => {
+    const slides = readFileSync(join(root, 'src', 'components', 'summary', 'slides.tsx'), 'utf8');
+    for (const name of emojiNames) {
+      expect(slides, name).toMatch(new RegExp(`['"]${name}['"]`));
+    }
   });
 });

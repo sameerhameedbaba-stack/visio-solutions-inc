@@ -97,13 +97,17 @@ test.describe('summary deck on the website', () => {
 });
 
 test.describe('summary folder on its own', () => {
-  test('contains only the page, its styles, its script and its icon', () => {
-    expect(readdirSync(join(process.cwd(), 'public', 'summary')).sort()).toEqual([
+  test('contains only the page, its styles, its script, its icon and its pictures', () => {
+    const folder = join(process.cwd(), 'public', 'summary');
+    expect(readdirSync(folder).sort()).toEqual([
       'deck.css',
       'deck.js',
       'favicon.svg',
+      'img',
       'index.html',
     ]);
+    // The pictures travel with their licence.
+    expect(readdirSync(join(folder, 'img'))).toContain('LICENSE-fluent-emoji.txt');
   });
 
   test('works when copied anywhere and opened straight from disk', async ({ page }) => {
@@ -137,7 +141,7 @@ test.describe('summary folder on its own', () => {
         headings: document.fonts.check('800 40px "Plus Jakarta Sans Variable"'),
       };
     });
-    expect(look).toEqual({ background: 'rgb(6, 8, 22)', body: true, headings: true });
+    expect(look).toEqual({ background: 'rgb(247, 249, 252)', body: true, headings: true });
     await expect(page.getByRole('heading', { name: /fast computer/i })).toBeVisible();
 
     // And it still works as a presentation.
