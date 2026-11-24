@@ -147,6 +147,14 @@ function restoreApi() {
   }
 }
 
+// The /summary deck is a self-contained folder in public/, built first so the
+// export copies it into out/summary/.
+const summary = spawnSync('node', ['scripts/build-summary.mjs'], { cwd: root, stdio: 'inherit' });
+if (summary.status !== 0) {
+  console.error('✗ The /summary deck failed to build.');
+  process.exit(summary.status ?? 1);
+}
+
 console.log('▶ Building static export…');
 moveApiOut();
 try {

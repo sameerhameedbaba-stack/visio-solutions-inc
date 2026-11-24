@@ -76,7 +76,7 @@
  * JavaScript is running and before the deck has taken over, so there is no
  * visible-then-hidden flash; if the script never starts they appear anyway.
  */
-:global(.js) .deck:not(.ready) [data-a] {
+:global(.js) .deck:not([data-ready]) [data-a] {
   opacity: 0;
   animation: show 0.5s ease 2.5s forwards;
 }
@@ -316,7 +316,7 @@
     animation: none !important;
     opacity: 1;
   }
-  :global(.js) .deck:not(.ready) [data-a] {
+  :global(.js) .deck:not([data-ready]) [data-a] {
     opacity: 1;
     animation: none;
   }

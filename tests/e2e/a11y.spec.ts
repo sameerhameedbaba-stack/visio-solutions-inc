@@ -13,7 +13,7 @@ const pages = [
   { name: 'payment', path: '/payment' },
   { name: 'payment success', path: '/payment/success?ChkID=8821&TransID=T-1' },
   { name: 'payment cancel', path: '/payment/cancel' },
-  { name: 'summary deck', path: '/summary' },
+  { name: 'summary deck', path: '/summary/index.html' },
 ];
 
 /**
@@ -57,7 +57,7 @@ for (const { name, path } of pages) {
 // once its entrance animation has finished.
 for (let slide = 2; slide <= 10; slide += 1) {
   test(`no serious/critical accessibility violations: summary slide ${slide}`, async ({ page }) => {
-    await page.goto(`/summary#s${slide}`);
+    await page.goto(`/summary/index.html#s${slide}`);
     await expect(
       page.locator('section[aria-roledescription="slide"]:not([hidden])'),
     ).toHaveAttribute('aria-label', new RegExp(`^${slide} of 10`));

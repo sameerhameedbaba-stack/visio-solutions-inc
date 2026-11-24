@@ -2,20 +2,15 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { deckBrand, deckSlides, slideIndexFromHash } from '@/content/summary';
-import { isStandaloneRoute } from '@/components/layout/SiteChrome';
-import { metadata } from '@/app/summary/page';
 import sitemap from '@/app/sitemap';
 
 const root = join(__dirname, '..', '..');
 
 /** Every source file that makes up the /summary deck. */
 function deckSources(): { file: string; text: string }[] {
-  const dir = join(root, 'src', 'components', 'summary');
-  const files = readdirSync(dir).map((name) => join(dir, name));
-  files.push(
-    join(root, 'src', 'content', 'summary.ts'),
-    join(root, 'src', 'app', 'summary', 'page.tsx'),
-  );
+  const dirs = [join(root, 'src', 'components', 'summary'), join(root, 'scripts', 'summary')];
+  const files = dirs.flatMap((dir) => readdirSync(dir).map((name) => join(dir, name)));
+  files.push(join(root, 'src', 'content', 'summary.ts'));
   return files.map((file) => ({ file, text: readFileSync(file, 'utf8') }));
 }
 
@@ -57,17 +52,19 @@ describe('slideIndexFromHash', () => {
   });
 });
 
-describe('summary route', () => {
-  it('renders without the site chrome', () => {
-    expect(isStandaloneRoute('/summary')).toBe(true);
-    expect(isStandaloneRoute('/summary/')).toBe(true);
-    expect(isStandaloneRoute('/')).toBe(false);
-    expect(isStandaloneRoute('/summary-of-services')).toBe(false);
-    expect(isStandaloneRoute(null)).toBe(false);
+describe('summary deck placement', () => {
+  it('is left out of the sitemap', () => {
+    expect(sitemap().some((entry) => entry.url.includes('/summary'))).toBe(false);
   });
 
-  it('is kept out of search results and the sitemap', () => {
-    expect(metadata.robots).toMatchObject({ index: false });
-    expect(sitemap().some((entry) => entry.url.includes('/summary'))).toBe(false);
+  it('is built as a self-contained folder before every site build', () => {
+    const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')) as {
+      scripts: Record<string, string>;
+    };
+    expect(pkg.scripts.build).toContain('build:summary');
+    expect(pkg.scripts.dev).toContain('build:summary');
+    expect(readFileSync(join(root, 'scripts', 'build-static.mjs'), 'utf8')).toContain(
+      'scripts/build-summary.mjs',
+    );
   });
 });

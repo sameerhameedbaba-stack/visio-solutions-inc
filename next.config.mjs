@@ -83,6 +83,12 @@ const nextConfig = {
             },
           ];
         },
+        // The /summary deck is a self-contained folder in public/ (see
+        // scripts/build-summary.mjs). Static hosting serves its index.html for
+        // /summary/ automatically; the Node server needs to be pointed at it.
+        async redirects() {
+          return [{ source: '/summary', destination: '/summary/index.html', permanent: false }];
+        },
       }),
 };
 

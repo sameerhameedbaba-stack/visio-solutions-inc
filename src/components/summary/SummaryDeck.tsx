@@ -2,13 +2,19 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, Maximize, Minimize, NotebookText, X } from 'lucide-react';
-import { gsap, useGSAP, MOTION_REDUCED } from '@/lib/motion';
+// GSAP is imported directly (not through @/lib/motion) so the standalone deck
+// bundle does not carry the scroll plugins the website uses.
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
 import { deckBrand, deckSlides, slideIndexFromHash as indexFromHash } from '@/content/summary';
 import { Logo } from '@/components/layout/Logo';
 import { cn } from '@/lib/utils';
 import { slideComponents } from './slides';
 import styles from './deck.module.css';
 
+if (typeof window !== 'undefined') gsap.registerPlugin(useGSAP);
+
+const MOTION_REDUCED = '(prefers-reduced-motion: reduce)';
 const COUNT = deckSlides.length;
 
 const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
@@ -75,7 +81,12 @@ export function SummaryDeck() {
   useEffect(() => {
     const id = deckSlides[indexRef.current]?.id;
     if (id && window.location.hash !== `#${id}`) {
-      window.history.replaceState(window.history.state, '', `#${id}`);
+      try {
+        window.history.replaceState(window.history.state, '', `#${id}`);
+      } catch {
+        // Some browsers refuse history changes on pages opened from disk; the
+        // deck works the same, the address bar just keeps its original hash.
+      }
     }
   }, [index]);
 
@@ -159,20 +170,24 @@ export function SummaryDeck() {
       timelineRef.current?.kill();
       incoming.scrollTop = 0;
       const outgoing = leaving !== null ? (slideRefs.current[leaving] ?? null) : null;
-      const items = Array.from(incoming.querySelectorAll<HTMLElement>('[data-a]'));
+      const allItems = Array.from(incoming.querySelectorAll<HTMLElement>('[data-a]'));
+      // Only animate what is laid out at this screen size (some slides carry a
+      // phone layout and a desktop layout; the unused one is display: none).
+      const items = allItems.filter((element) => element.getClientRects().length > 0);
       const colours = { '--a1': glow[0], '--a2': glow[1], '--a3': glow[2] };
 
       if (window.matchMedia(MOTION_REDUCED).matches) {
         gsap.set(root, colours);
-        gsap.set([incoming, ...items], { clearProps: 'opacity,visibility,transform' });
-        root.classList.add(styles.ready ?? '');
+        gsap.set([incoming, ...allItems], { clearProps: 'opacity,visibility,transform' });
+        root.setAttribute('data-ready', '');
         if (leaving !== null) setLeaving(null);
         return;
       }
 
       // Hide the incoming content before the deck takes over from the CSS gate.
+      gsap.set(allItems, { clearProps: 'opacity,visibility,transform' });
       gsap.set(items, { autoAlpha: 0, y: 26 });
-      root.classList.add(styles.ready ?? '');
+      root.setAttribute('data-ready', '');
 
       const dir = directionRef.current;
       const start = outgoing ? 0.2 : 0;
@@ -196,7 +211,8 @@ export function SummaryDeck() {
           y: 0,
           duration: 0.7,
           ease: 'power3.out',
-          stagger: 0.05,
+          // About 50ms apart, but never longer than 0.7s in total on busy slides.
+          stagger: { amount: Math.min(0.7, 0.05 * Math.max(items.length - 1, 0)) },
           clearProps: 'transform',
         },
         start + 0.08,

@@ -3,7 +3,6 @@ import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { SiteChrome } from '@/components/layout/SiteChrome';
 import { ThemeScript } from '@/components/ui/ThemeScript';
 import { SmoothScroll } from '@/components/motion/SmoothScroll';
 import { OrganizationSchema, WebSiteSchema } from '@/components/seo/StructuredData';
@@ -49,14 +48,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        <SiteChrome>
-          <Header />
-        </SiteChrome>
+        <Header />
         <main id="main-content">{children}</main>
-        <SiteChrome>
-          <Footer />
-          <SmoothScroll />
-        </SiteChrome>
+        <Footer />
+        <SmoothScroll />
         <OrganizationSchema />
         <WebSiteSchema />
         <Analytics />

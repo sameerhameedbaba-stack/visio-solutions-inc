@@ -52,6 +52,10 @@ Legend: **Idx** = indexation recommendation.
 - Insights currently ships 3 high-quality evergreen articles rather than many
   shallow posts.
 - `/summary` is a full-screen presentation deck opened by direct link (for
-  example `/summary#s1` … `/summary#s10`). It has no site header or footer, is
-  not linked from the navigation, is left out of the sitemap and is `noindex`.
-  Keys: ← → to move, N for the presenter note, F for full screen.
+  example `/summary/#s1` … `/summary/#s10`). It is a self-contained folder —
+  `summary/index.html`, `deck.css`, `deck.js`, `favicon.svg` — built by
+  `scripts/build-summary.mjs` before every site build, so it works on the
+  website, uploaded on its own, or opened straight from disk. It has no site
+  header or footer, is not linked from the navigation, is left out of the
+  sitemap and is `noindex`. Keys: ← → to move, N for the presenter note, F for
+  full screen.

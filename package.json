@@ -4,8 +4,9 @@
   "private": true,
   "description": "Public marketing website for Visio Solutions Inc.",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "npm run build:summary && next dev",
+    "build": "npm run build:summary && next build",
+    "build:summary": "node scripts/build-summary.mjs",
     "build:static": "node scripts/build-static.mjs",
     "start": "next start",
     "lint": "next lint",
@@ -27,6 +28,8 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.1",
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
     "@playwright/test": "^1.49.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
@@ -37,6 +40,7 @@
     "@types/react-dom": "^19.0.2",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "esbuild": "^0.21.5",
     "eslint": "^8.57.1",
     "eslint-config-next": "15.3.9",
     "eslint-config-prettier": "^9.1.0",
