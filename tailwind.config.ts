@@ -14,6 +14,11 @@ const config: Config = {
   content: ['./src/**/*.{ts,tsx,mdx}'],
   theme: {
     extend: {
+      screens: {
+        // Desktop-width viewports that are short (a laptop shared over a call,
+        // 1280×720). Used by the /summary deck to tighten vertical rhythm.
+        short: { raw: '(min-width: 1024px) and (max-height: 820px)' },
+      },
       colors: {
         // Theme-aware neutrals (defined as channels in globals.css)
         background: withChannel('--background'),

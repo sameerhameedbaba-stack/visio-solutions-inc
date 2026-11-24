@@ -13,6 +13,7 @@ const pages = [
   { name: 'payment', path: '/payment' },
   { name: 'payment success', path: '/payment/success?ChkID=8821&TransID=T-1' },
   { name: 'payment cancel', path: '/payment/cancel' },
+  { name: 'summary deck', path: '/summary' },
 ];
 
 /**
@@ -48,6 +49,19 @@ for (const { name, path } of pages) {
   test(`no serious/critical accessibility violations: ${name}`, async ({ page }) => {
     await page.goto(path);
     await readThrough(page);
+    await expectNoSeriousViolations(page);
+  });
+}
+
+// The summary deck shows one slide at a time, so each slide is audited on its own
+// once its entrance animation has finished.
+for (let slide = 2; slide <= 10; slide += 1) {
+  test(`no serious/critical accessibility violations: summary slide ${slide}`, async ({ page }) => {
+    await page.goto(`/summary#s${slide}`);
+    await expect(
+      page.locator('section[aria-roledescription="slide"]:not([hidden])'),
+    ).toHaveAttribute('aria-label', new RegExp(`^${slide} of 10`));
+    await page.waitForTimeout(1800);
     await expectNoSeriousViolations(page);
   });
 }
